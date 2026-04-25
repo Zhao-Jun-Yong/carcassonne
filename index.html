@@ -1,888 +1,458 @@
-<!DOCTYPE html>
-
-<html lang="zh-Hant">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>卡卡頌規則速查</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Noto+Serif+TC:wght@400;500;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg:#0d0b12; --bg2:#13101a; --surface:#1a1525; --border:#2e2540;
-  --gold:#c9a84c; --gold-dim:#7a6030; --text:#e8e0d0; --text-dim:#9a9080;
-  --dark:#0d0b12; --nav-h:56px;
-  --c-beginner:#1a5c38; --c-flow:#1a3870; --c-faq:#6b3a10;
-  --c-base:#6b1818; --c-river:#0d4060; --c-abbot:#3a1868;
-  --c-inn:#6b1830; --c-builder:#5c3408; --c-flier:#0a5048;
-  --c-edict:#44086b; --c-ferry:#0a3060; --c-goldm:#5c4808;
-  --c-mage:#26086b; --c-robber:#5c0808; --c-crop:#185808;
-  --c-dragon:#6b2208; --c-bridge:#282838;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  background-color:var(--bg);
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  font-family:'Noto Serif TC',serif;
-  color:var(--text);min-height:100vh;
-  padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom,0px));
-  overflow-x:hidden;
-}
-
-/* TITLE */
-.title-band{background:linear-gradient(180deg,#1c1428 0%,var(–bg) 100%);border-bottom:1px solid var(–gold-dim);padding:1.1rem 1rem .7rem;text-align:center;position:relative;}
-.title-band::after{content:’’;position:absolute;bottom:-3px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(–gold-dim),transparent);}
-.title-text{font-family:‘Cinzel Decorative’,serif;font-size:1.15rem;letter-spacing:.08em;background:linear-gradient(135deg,#e8c86a 0%,var(–gold) 50%,#a07820 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.3;}
-.title-sub{font-family:‘IM Fell English’,serif;font-size:.72rem;color:var(–text-dim);letter-spacing:.15em;margin-top:.25rem;font-style:italic;}
-
-/* QUICK-REF */
-.qref{margin:.8rem .9rem;background:var(–surface);border:1px solid var(–gold-dim);border-radius:10px;overflow:hidden;box-shadow:0 0 20px rgba(201,168,76,.08);}
-.qref-title{background:linear-gradient(90deg,#3a2a0a,#2a1e06);border-bottom:1px solid var(–gold-dim);padding:.45rem .8rem;font-family:‘IM Fell English’,serif;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(–gold);}
-.qref-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(–border);}
-.qref-cell{background:var(–bg2);padding:.45rem .7rem;display:flex;justify-content:space-between;align-items:center;gap:.4rem;}
-.qref-label{font-size:.77rem;color:var(–text-dim);line-height:1.3;}
-.qref-val{font-size:.88rem;font-weight:700;color:var(–gold);white-space:nowrap;}
-.qref-note{grid-column:1/-1;background:var(–bg2);padding:.35rem .7rem;font-size:.72rem;color:var(–text-dim);border-top:1px solid var(–border);font-style:italic;}
-
-main{max-width:740px;margin:0 auto;padding:0 .7rem .5rem;}
-
-/* SECTIONS */
-.section{margin-bottom:.65rem;border-radius:10px;overflow:hidden;border:1px solid var(–border);box-shadow:0 2px 12px rgba(0,0,0,.4);transition:box-shadow .2s;}
-.section:hover{box-shadow:0 4px 20px rgba(0,0,0,.55);}
-.sec-hdr{display:flex;align-items:center;gap:.55rem;padding:.7rem .9rem;cursor:pointer;user-select:none;position:relative;overflow:hidden;}
-.sec-hdr::before{content:’’;position:absolute;inset:0;opacity:.18;background:var(–jewel);}
-.sec-hdr::after{content:’’;position:absolute;left:0;top:0;bottom:0;width:3px;background:var(–jewel);box-shadow:0 0 8px var(–jewel);}
-.sec-icon{font-size:1rem;flex-shrink:0;position:relative;z-index:1;}
-.sec-title{flex:1;font-size:.9rem;font-weight:700;color:var(–text);letter-spacing:.02em;position:relative;z-index:1;line-height:1.3;}
-.sec-tag{font-size:.63rem;font-family:‘IM Fell English’,serif;font-style:italic;color:var(–gold);background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);border-radius:10px;padding:.1rem .45rem;white-space:nowrap;position:relative;z-index:1;}
-.sec-chev{color:var(–gold);font-size:.75rem;transition:transform .25s;position:relative;z-index:1;flex-shrink:0;}
-.section.closed .sec-chev{transform:rotate(-90deg);}
-.sec-body{background:var(–bg2);padding:.9rem .95rem 1rem;border-top:1px solid var(–border);}
-.section.closed .sec-body{display:none;}
-
-/* RULE BLOCKS */
-.rb{margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.06);}
-.rb:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
-.rl{font-family:‘IM Fell English’,serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(–gold);margin-bottom:.4rem;padding-left:.6rem;border-left:2px solid var(–gold-dim);}
-.rb h3{font-size:.83rem;font-weight:700;color:var(–text);margin:.5rem 0 .25rem;opacity:.9;}
-.rb h3:first-child{margin-top:0;}
-p{font-size:.84rem;line-height:1.7;color:var(–text);margin-bottom:.45rem;}
-p:last-child{margin-bottom:0;}
-p strong,li strong{color:#e8d090;}
-ul{padding-left:1.1rem;margin-bottom:.45rem;}
-li{font-size:.83rem;line-height:1.65;color:var(–text);margin-bottom:.2rem;}
-li::marker{color:var(–gold-dim);}
-
-/* SCORE BOXES */
-.sb{background:var(–surface);border:1px solid var(–border);border-radius:8px;overflow:hidden;margin:.55rem 0;}
-.sb-t{background:rgba(201,168,76,.1);border-bottom:1px solid var(–border);padding:.35rem .7rem;font-size:.68rem;font-family:‘IM Fell English’,serif;letter-spacing:.1em;text-transform:uppercase;color:var(–gold);}
-.sr{display:flex;justify-content:space-between;align-items:center;padding:.35rem .7rem;border-bottom:1px solid rgba(255,255,255,.04);font-size:.82rem;gap:.5rem;}
-.sr:last-child{border-bottom:none;}
-.sr span:first-child{color:var(–text-dim);}
-.sv{font-weight:700;color:#e8b050;white-space:nowrap;}
-
-/* NOTE */
-.note{background:rgba(201,168,76,.07);border-left:2px solid var(–gold-dim);border-radius:0 6px 6px 0;padding:.5rem .75rem;font-size:.8rem;color:var(–text-dim);line-height:1.6;margin:.5rem 0;}
-
-/* FAQ */
-.fq{font-size:.84rem;font-weight:700;color:#d0c8b0;margin:.6rem 0 .2rem;padding-left:.5rem;border-left:2px solid #6b4a20;}
-.fq:first-child{margin-top:0;}
-.fa{font-size:.83rem;line-height:1.68;color:var(–text);padding-left:.5rem;margin-bottom:.1rem;}
-.fa strong{color:#e8c870;}
-
-/* TURN FLOW */
-.tf-lbl{font-family:‘IM Fell English’,serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(–gold);margin-bottom:.5rem;padding-left:.6rem;border-left:2px solid var(–gold-dim);}
-#expToggles{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:1rem;}
-.etog{border-radius:14px;padding:.2rem .6rem;font-size:.72rem;font-weight:700;font-family:‘Noto Serif TC’,serif;cursor:pointer;border:1.5px solid transparent;transition:opacity .15s,transform .12s,background .15s;user-select:none;opacity:.4;background:transparent;}
-.etog.on{opacity:1;transform:scale(1.05);}
-.fp{margin-bottom:.6rem;border-radius:8px;overflow:hidden;border:1px solid var(–border);}
-.fph{display:flex;align-items:center;gap:.5rem;padding:.5rem .8rem;background:var(–surface);border-bottom:1px solid var(–border);}
-.pnum{background:var(–gold);color:var(–dark);width:1.3rem;height:1.3rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;}
-.ptitle{font-size:.84rem;font-weight:700;color:var(–text);}
-.fsteps{background:var(–bg2);}
-.fstep{display:flex;align-items:flex-start;gap:.5rem;padding:.42rem .8rem;border-bottom:1px solid rgba(255,255,255,.04);font-size:.81rem;line-height:1.58;color:var(–text);animation:si .18s ease;}
-.fstep:last-child{border-bottom:none;}
-@keyframes si{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
-.fdot{width:.5rem;height:.5rem;border-radius:50%;margin-top:.42rem;flex-shrink:0;}
-.ftxt{flex:1;}
-.fbadge{display:inline-block;border-radius:3px;padding:.03rem .3rem;font-size:.63rem;font-weight:700;color:#fff;margin-right:.3rem;vertical-align:middle;}
-.fcond{display:block;font-size:.72rem;color:var(–text-dim);font-style:italic;margin-top:.08rem;}
-
-/* FAB */
-#sfab{position:fixed;bottom:calc(var(–nav-h) + 14px + env(safe-area-inset-bottom,0px));right:14px;width:48px;height:48px;border-radius:50%;background:var(–gold);color:var(–dark);border:none;font-size:1.2rem;cursor:pointer;z-index:200;box-shadow:0 4px 16px rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;transition:transform .15s;}
-#sfab:active{transform:scale(.93);}
-
-/* SEARCH OVERLAY */
-#sov{position:fixed;inset:0;background:rgba(13,11,18,.97);z-index:300;display:flex;flex-direction:column;padding:1rem 1rem .5rem;gap:.7rem;transform:translateY(100%);transition:transform .25s cubic-bezier(.25,.46,.45,.94);}
-#sov.open{transform:translateY(0);}
-.sbar{display:flex;align-items:center;gap:.6rem;background:var(–surface);border:1px solid var(–gold-dim);border-radius:10px;padding:.6rem .9rem;}
-#sinp{flex:1;background:none;border:none;outline:none;color:var(–text);font-family:‘Noto Serif TC’,serif;font-size:.95rem;}
-#sinp::placeholder{color:var(–text-dim);}
-.sico{color:var(–gold);font-size:1rem;}
-#scls{background:none;border:none;color:var(–text-dim);font-size:1.1rem;cursor:pointer;padding:0 .2rem;}
-#scnt{font-size:.75rem;color:var(–text-dim);padding-left:.2rem;}
-#sres{flex:1;overflow-y:auto;}
-.shit{display:block;padding:.7rem .5rem;border-bottom:1px solid var(–border);cursor:pointer;color:var(–text);font-size:.83rem;line-height:1.55;text-decoration:none;}
-.shit:active{background:var(–surface);}
-.hsec{font-size:.68rem;color:var(–gold);margin-bottom:.15rem;}
-mark.hl{background:rgba(201,168,76,.35);color:var(–text);border-radius:2px;padding:0 1px;}
-
-/* BOTTOM NAV */
-#bnav{position:fixed;bottom:0;left:0;right:0;height:var(–nav-h);background:#0f0c17;border-top:1px solid var(–border);display:flex;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;z-index:100;padding-bottom:env(safe-area-inset-bottom,0px);-webkit-overflow-scrolling:touch;}
-#bnav::-webkit-scrollbar{display:none;}
-.ni{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.18rem;padding:0 .7rem;min-width:56px;cursor:pointer;flex-shrink:0;text-decoration:none;border-bottom:2px solid transparent;transition:background .15s;}
-.ni:active{background:rgba(255,255,255,.05);}
-.ni.active{border-bottom-color:var(–gold);}
-.nic{font-size:.95rem;line-height:1;}
-.nil{font-size:.58rem;color:var(–text-dim);white-space:nowrap;}
-.ni.active .nil{color:var(–gold);}
-.nd{width:1px;background:var(–border);margin:.5rem 0;flex-shrink:0;}
-.sec-hidden{display:none!important;}
-</style>
-
-</head>
-<body>
-
-<div class="title-band">
-  <div class="title-text">⚔ Carcassonne</div>
-  <div class="title-sub">卡卡頌 · 規則速查</div>
-</div>
-<div style="display:flex;justify-content:center;gap:.6rem;padding:.5rem;background:var(--bg2);border-bottom:1px solid var(--border);">
-  <a style="font-family:'IM Fell English',serif;font-size:.75rem;padding:.25rem .7rem;border-radius:10px;border:1px solid var(--gold);background:rgba(201,168,76,.15);color:var(--gold);text-decoration:none;" href="index.html">繁體中文</a>
-  <a style="font-family:'IM Fell English',serif;font-size:.75rem;padding:.25rem .7rem;border-radius:10px;border:1px solid var(--gold-dim);color:var(--text-dim);text-decoration:none;" href="en.html">English</a>
-</div>
-
-<div class="qref">
-  <div class="qref-title">⚡ 計分快速參照</div>
-  <div class="qref-grid">
-    <div class="qref-cell"><span class="qref-label">道路（每片）</span><span class="qref-val">1 分</span></div>
-    <div class="qref-cell"><span class="qref-label">城堡（每片）</span><span class="qref-val">2 分</span></div>
-    <div class="qref-cell"><span class="qref-label">盾牌徽章（完成）</span><span class="qref-val">+2 分</span></div>
-    <div class="qref-cell"><span class="qref-label">修道院（全圍）</span><span class="qref-val">9 分</span></div>
-    <div class="qref-cell"><span class="qref-label">農夫（每座完整城堡）</span><span class="qref-val">3 分</span></div>
-    <div class="qref-cell"><span class="qref-label">含餐館道路（每片）</span><span class="qref-val">2 分</span></div>
-    <div class="qref-cell"><span class="qref-label">含主教堂城堡（每片）</span><span class="qref-val">3 分</span></div>
-    <div class="qref-cell"><span class="qref-label">農夫旁山城（每座）</span><span class="qref-val">4 分</span></div>
-    <div class="qref-note">未完成時：道路1分/片，城堡1分/片，盾牌+1分，修道院本身+周圍各1分 ｜ 餐館/主教堂未完成→0分</div>
-  </div>
-</div>
-
-<main>
-
-<!-- 新手入門 -->
-
-<div class="section" id="beginner" data-sec="新手入門" style="--jewel:var(--c-beginner)">
-  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🌱</span><span class="sec-title">新手入門指南</span><span class="sec-tag">第一次玩看這裡</span><span class="sec-chev">▾</span></div>
-  <div class="sec-body">
-    <div class="rb">
-      <div class="rl">每回合口訣</div>
-      <ul>
-        <li><strong>① 抽、放</strong>：抽一片版圖，放到已有版圖的旁邊，邊緣地形必須吻合。</li>
-        <li><strong>② 派（可選）</strong>：可以將一名手下放到這片版圖的某個地形，但該地形不能已有任何人的手下。</li>
-        <li><strong>③ 算分</strong>：若剛才的動作完成了某個地形，立即計分並拿回手下。</li>
-      </ul>
-    </div>
-    <div class="rb">
-      <div class="rl">最常見的新手誤區</div>
-      <ul>
-        <li><strong>手下不夠用？</strong>正常的。手下有限，策略就在等地形完成時拿回。</li>
-        <li><strong>農夫不會回來？</strong>正確。農夫（平躺放置）遊戲中不回手，只在遊戲結束時計分。</li>
-        <li><strong>盾牌怎麼算？</strong>城堡完成時一起計，遊戲中每個+2分，未完成時每個+1分。</li>
-        <li><strong>可以強佔別人的地形嗎？</strong>不行。但地形因版圖連接合併後，兩人共同佔領，手下多者得分（並列則共同得分）。</li>
-        <li><strong>修道院什麼時候完成？</strong>周圍 8 格全部放滿版圖時，共 9 分。</li>
-      </ul>
-    </div>
-    <div class="rb">
-      <div class="rl">手下的角色名稱</div>
-      <ul>
-        <li>站在<strong>道路</strong>上 → 強盜（Thief）</li>
-        <li>站在<strong>城堡</strong>裡 → 騎士（Knight）</li>
-        <li>站在<strong>修道院</strong>上 → 修士（Monk）</li>
-        <li><strong>平躺</strong>在草原上 → 農夫（Farmer）</li>
-      </ul>
-      <p>角色名稱在麥田圈、火龍餐點清單等擴充規則中會出現。</p>
-    </div>
-  </div>
-</div>
-
-<!-- 互動回合流程 -->
-
-<div class="section" id="turnflow" data-sec="互動回合流程" style="--jewel:var(--c-flow)">
-  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🔄</span><span class="sec-title">互動回合流程</span><span class="sec-tag">選擇你的擴充</span><span class="sec-chev">▾</span></div>
-  <div class="sec-body">
-    <div class="tf-lbl">選擇使用中的擴充</div>
-    <div id="expToggles"></div>
-    <div id="flowDisplay"></div>
-  </div>
-</div>
-
-<!-- 裁判手冊 -->
-
-<div class="section" id="faq" data-sec="裁判手冊" style="--jewel:var(--c-faq)">
-  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">⚖</span><span class="sec-title">裁判手冊：常見爭議與跨擴充規則</span><span class="sec-tag">有衝突時查這裡</span><span class="sec-chev">▾</span></div>
-  <div class="sec-body">
-    <div class="rb">
-      <div class="rl">金礦</div>
-      <div class="fq">Q：放下金礦版圖的同一回合，若該版圖完成了某個地形，可以立即拿走金塊嗎？</div>
-      <div class="fa"><strong>可以。</strong>正確順序：①放版圖 → ②放金塊 → ③計分並分配金塊。金塊在計分前已放置，可在同一回合拿走。</div>
-      <div class="fq">Q：農夫可以拿金塊嗎？</div>
-      <div class="fa"><strong>不行。</strong>農夫在遊戲中或最終計分時都無法獲得金塊。</div>
-    </div>
-    <div class="rb">
-      <div class="rl">教堂餐館（酒館與大教堂）</div>
-      <div class="fq">Q：可以把主教堂放到別人的城堡裡嗎？</div>
-      <div class="fa"><strong>可以。</strong>合法干擾——對手未完成該城堡得 0 分。同樣，餐館也可以放到別人的道路上。</div>
-      <div class="fq">Q：含餐館或主教堂的地形遊戲結束時未完成，還有分嗎？</div>
-      <div class="fa"><strong>沒有，得 0 分。</strong>比一般未完成地形（還有基本分）更慘。</div>
-      <div class="fq">Q：首領（大手下）計入共同佔領的人數嗎？</div>
-      <div class="fa"><strong>算 2 名手下。</strong>計算多數時，首領等同 2 名手下。</div>
-    </div>
-    <div class="rb">
-      <div class="rl">建築師與豬</div>
-      <div class="fq">Q：火龍會吃掉建築師和小豬嗎？</div>
-      <div class="fa"><strong>會。</strong>大盒版說明書的火龍餐點清單中，建築師和小豬都在列，被吃後歸還玩家。</div>
-      <div class="fq">Q：建築師被吃掉後，還能進行額外回合嗎？</div>
-      <div class="fa"><strong>不行。</strong>建築師不在版圖上，額外回合條件不成立。</div>
-      <div class="fq">Q：小豬被吃掉後，農夫計分怎麼算？</div>
-      <div class="fa"><strong>回到每座城堡 3 分。</strong>小豬加成消失。</div>
-      <div class="fq">Q：額外回合中又放下麥田圈版圖，麥田圈效應何時執行？</div>
-      <div class="fa">先完成額外回合全部步驟（放圖、派手下、計分），再執行麥田圈效應。</div>
-    </div>
-    <div class="rb">
-      <div class="rl">公主火龍</div>
-      <div class="fq">Q：仙女的每回合 1 分，在建築師的額外回合開始時也算嗎？</div>
-      <div class="fa"><strong>不算。</strong>仙女 1 分只在「正常回合」開始時觸發，建築師的額外回合不計。</div>
-      <div class="fq">Q：仙女可以保護手下不被公主版圖趕走嗎？</div>
-      <div class="fa"><strong>不能。</strong>仙女只對火龍有保護效果，對公主版圖無效。被公主趕走的騎士也不能獲得仙女 3 分加成。</div>
-      <div class="fq">Q：任意門可以把手下放到已有人的地形嗎？</div>
-      <div class="fa"><strong>不行。</strong>任意門遵循一般派遣規則——不能放到已被佔領或已完成的地形。</div>
-      <div class="fq">Q：草原上的農夫會被火龍吃掉嗎？</div>
-      <div class="fa"><strong>會。</strong>火龍走到某片版圖時，該版圖上所有手下（包含農夫）都會被吃掉。</div>
-      <div class="fq">Q：火龍走到已計分完成但手下仍在的版圖，手下會被吃嗎？</div>
-      <div class="fa"><strong>會。</strong>火龍不區分已完成或未完成，只要版圖上有手下就吃。</div>
-    </div>
-    <div class="rb">
-      <div class="rl">法師女巫 × 公主火龍</div>
-      <div class="fq">Q：火龍會吃掉法師或女巫嗎？</div>
-      <div class="fa"><strong>會。</strong>根據官方 FAQ，法師和女巫都在火龍餐點清單上，被吃後放回備用。</div>
-      <div class="fq">Q：放下魔法版圖後，法師與女巫因此被迫在同一地形，怎麼辦？</div>
-      <div class="fa">由放版圖的玩家立即移動其中一名，在計分之前處理完畢。</div>
-      <div class="fq">Q：法師/女巫所在地形計分時，若地形上沒有任何手下，效果還算嗎？</div>
-      <div class="fa"><strong>仍然有效。</strong>即使沒有手下，法師仍為每片版圖加分；女巫仍對總分取半（無條件進位）。法師和女巫不能同時在同一地形，因此不會同時生效。</div>
-    </div>
-    <div class="rb">
-      <div class="rl">麥田圈</div>
-      <div class="fq">Q：選擇 B 效應（強制收回），某玩家沒有對應類型手下在場，怎麼辦？</div>
-      <div class="fa"><strong>跳過該玩家。</strong>沒有對應手下在版圖上者直接跳過。</div>
-      <div class="fq">Q：選擇 A 效應（派遣），可以不派嗎？</div>
-      <div class="fa"><strong>可以選擇不派。</strong>A 效應對每位玩家是「可以」，不是強制。</div>
-      <div class="fq">Q：A 效應派遣的手下，可以放到已被對手佔領的同一地形嗎？</div>
-      <div class="fa"><strong>可以，但必須緊靠自己已有的手下。</strong>這等同正常的共同佔領機制。</div>
-    </div>
-    <div class="rb">
-      <div class="rl">擺渡人</div>
-      <div class="fq">Q：建築師所在道路因渡船移動而延伸，可以觸發額外回合嗎？</div>
-      <div class="fa"><strong>不行。</strong>額外回合只在玩家實際擺放新版圖時觸發，渡船移動不算。</div>
-      <div class="fq">Q：渡船移動後，若道路兩端都被封住，道路立即計分嗎？</div>
-      <div class="fa"><strong>是的，立即計分。</strong>只要道路兩端都封住，不論是版圖擺放還是渡船移動造成的，都立即計分。</div>
-    </div>
-    <div class="rb">
-      <div class="rl">土匪</div>
-      <div class="fq">Q：土匪因打劫而移動，新位置又有計分標記，會再度打劫嗎？</div>
-      <div class="fa"><strong>不會。</strong>土匪跟著標記移動到新格後，不再觸發連鎖打劫。</div>
-      <div class="fq">Q：同一格有多個土匪，每個都能打劫嗎？</div>
-      <div class="fa"><strong>是的，每個土匪獨立觸發。</strong>每個土匪主人各自得到被劫玩家得分的一半（無條件進位）。</div>
-      <div class="fq">Q：聖旨觸發的得分，土匪可以打劫嗎？</div>
-      <div class="fa"><strong>可以。</strong>只要是計分並移動計分標記的動作，土匪都可以打劫。</div>
-    </div>
-    <div class="rb">
-      <div class="rl">橋樑山城</div>
-      <div class="fq">Q：山城旁的農夫，山城算幾分？</div>
-      <div class="fa"><strong>4 分</strong>（一般完成城堡是 3 分）。</div>
-      <div class="fq">Q：火龍可以進入山城所在的版圖嗎？</div>
-      <div class="fa"><strong>不行。</strong>山城中的手下受到保護，效果等同伯爵城堡。</div>
-      <div class="fq">Q：市集競標可以讓分數降到 0 以下嗎？</div>
-      <div class="fa"><strong>可以。</strong>分數可以為負，是正常情況。</div>
-    </div>
-    <div class="rb">
-      <div class="rl">飛行器</div>
-      <div class="fq">Q：飛行落點是一個被對手佔領的未完成城堡，可以降落嗎？</div>
-      <div class="fa"><strong>可以。</strong>飛行器可降落在任何未完成的道路、城堡或修道院，不論是否已有他人手下。唯一禁止的是草原和已完成地形。</div>
-      <div class="fq">Q：骰子結果指向的位置根本沒有版圖，怎麼辦？</div>
-      <div class="fa"><strong>手下直接收回。</strong>該回合無法派遣任何手下或特殊人物。</div>
-    </div>
-    <div class="rb">
-      <div class="rl">聖旨</div>
-      <div class="fq">Q：一回合完成多個地形，可以移動不同的計分人物嗎？</div>
-      <div class="fa"><strong>可以。</strong>每個獨立計分機會都可以選擇移動哪個計分人物，但每次計分必須由同一個人物移動全部分數。</div>
-      <div class="fq">Q：聖旨觸發後，若得分又讓計分人物落在深色格，可以再抽一張聖旨嗎？</div>
-      <div class="fa"><strong>可以，可以連鎖，無限次數。</strong></div>
-    </div>
-  </div>
-</div>
-
-<!-- 基本規則 -->
-
-<div class="section" id="base" data-sec="基本規則" style="--jewel:var(--c-base)">
-  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">📜</span><span class="sec-title">基本規則</span><span class="sec-tag">主遊戲</span><span class="sec-chev">▾</span></div>
-  <div class="sec-body">
-    <div class="rb"><div class="rl">遊戲概要</div><p>2–6 人遊戲，共 72 片地形版圖，每人 7 名手下（Meeple），各取 1 片起始版圖開始。</p></div>
-    <div class="rb">
-      <div class="rl">每回合三步驟</div>
-      <h3>① 擺放版圖</h3><p>抽 1 片版圖，必須與桌面已有版圖的地形邊相符地擺放。極少數情況無法擺放時，移出遊戲，再抽一片。</p>
-      <h3>② 派遣手下（可選）</h3><p>可將 1 名手下放到剛擺放版圖的某個地形上。手下不得放在已被其他手下佔領的相同地形（包括自己的手下）。</p>
-      <h3>③ 計分</h3><p>若剛擺放的版圖讓某個地形完成，立即計分，並將手下拿回。</p>
-    </div>
-    <div class="rb">
-      <div class="rl">計分規則</div>
-      <div class="sb"><div class="sb-t">遊戲中（地形完成時）</div>
-        <div class="sr"><span>道路（每片版圖）</span><span class="sv">1 分</span></div>
-        <div class="sr"><span>城堡（每片版圖）</span><span class="sv">2 分</span></div>
-        <div class="sr"><span>城堡盾牌徽章（每個）</span><span class="sv">+2 分</span></div>
-        <div class="sr"><span>修道院（九宮格全滿）</span><span class="sv">9 分</span></div>
-      </div>
-      <div class="sb"><div class="sb-t">遊戲結束（最終計分）</div>
-        <div class="sr"><span>未完成道路（每片）</span><span class="sv">1 分</span></div>
-        <div class="sr"><span>未完成城堡（每片）</span><span class="sv">1 分</span></div>
-        <div class="sr"><span>未完成城堡盾牌（每個）</span><span class="sv">+1 分</span></div>
-        <div class="sr"><span>未完成修道院（本身＋周圍每片）</span><span class="sv">各 1 分</span></div>
-        <div class="sr"><span>農夫（每座鄰接的完整城堡）</span><span class="sv">3 分</span></div>
-      </div>
-    </div>
-    <div class="rb"><div class="rl">共同佔領</div><p>若一條道路或城堡由多名玩家共同佔領，手下最多者獨得全部分數；並列時每人都得全部分數，其他人不得分。</p></div>
-    <div class="rb"><div class="rl">農夫</div><p>農夫平躺放置於草原上，<strong>遊戲中不會拿回</strong>，只在最終計分時結算。農夫佔領所在草原鄰接的所有完成城堡，每座計 3 分。</p><div class="note">農夫也適用共同佔領規則：同一草原農夫最多者得分，並列者平分。</div></div>
-    <div class="rb"><div class="rl">計分板</div><p>到達或超過 50/100 格時，翻轉計分片或拿取 50/100 計分片放到自己面前記錄超過的分數。</p></div>
-  </div>
-</div>
-
-<!-- 河流 -->
-
-<div class="section" id="river" data-sec="河流" style="--jewel:var(--c-river)">
-  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🌊</span><span class="sec-title">河流</span><span class="sec-tag">迷你擴充</span><span class="sec-chev">▾</span></div>
-  <div class="sec-body">
-    <div class="rb"><div class="rl">內容</div><p>12 片背面顏色較深的河流版圖，包含水源版圖和湖泊版圖，用於取代起始版圖。</p></div>
-    <div class="rb"><div class="rl">遊戲準備</div><p>找出水源版圖和湖泊版圖，將其餘 10 片河流版圖正面朝下洗勻後疊成一疊，水源置於牌疊頂端，湖泊置於底部。</p></div>
-    <div class="rb"><div class="rl">遊戲進行</div>
-      <p>由放水源版圖的玩家開始，輪流抽取並擺放河流版圖。河流版圖都用完後，改用一般版圖。</p>
-      <ul><li>擺放河流版圖時必須延長河流，不可回折。</li><li>不得連續擺放 2 片左轉或 2 片右轉的版圖。</li></ul>
-      <div class="note">擺放河流版圖後，可選擇是否派遣手下，但不能放在河流上。</div>
-    </div>
-  </div>
-</div>
-
-<!-- 修道院長 -->
-
-<div class="section" id="abbot" data-sec="修道院長" style="--jewel:var(--c-abbot)">
-  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🌸</span><span class="sec-title">修道院長</span><span class="sec-tag">迷你擴充</span><span class="sec-chev">▾</span></div>
-  <div class="sec-body">
-    <div class="rb"><div class="rl">內容</div><p>每位玩家各 1 名自己顏色的修道院長（體型比手下高大）。</p></div>
-    <div class="rb"><div class="rl">派遣修道院長</div><p>擺放修道院或花園版圖時，可選擇派遣修道院長。修道院長只能放在修道院或花園上；花園上不可放一般手下。</p></div>
-    <div class="rb"><div class="rl">收回修道院長</div><p>在自己的回合，可選擇取回修道院長（不派新手下），不需等建築完成。取回時依照正常計分方式計算分數，無需等九宮格放滿。</p></div>
-    <div class="rb"><div class="rl">計分</div>
-      <div class="sb"><div class="sb-t">修道院長計分（同修道院）</div>
-        <div class="sr"><span>花園/修道院被 8 片包圍時</span><span class="sv">9 分</span></div>
-        <div class="sr"><span>最終計分（本身＋周圍每片）</span><span class="sv">各 1 分</span></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 教堂餐館 -->
-
-<div class="section" id="exp1" data-sec="教堂餐館" style="--jewel:var(--c-inn)">
-  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🏰</span><span class="sec-title">教堂餐館（酒館與大教堂）＋首領</span><span class="sec-tag">約＋15 分鐘</span><span class="sec-chev">▾</span></div>
-  <div class="sec-body">
-    <div class="rb"><div class="rl">內容</div><p>18 片新版圖（含 6 片湖濱餐館版圖、2 片主教堂版圖）；每位玩家各 1 名首領（體型比手下高大）。</p></div>
-    <div class="rb"><div class="rl">湖濱餐館計分</div><p>道路完成時，若路上有湖濱餐館，每片版圖得 <strong>2 分</strong>（取代原本 1 分）。</p><div class="note">道路在遊戲結束時未完成，得 0 分（不論有無餐館）。</div></div>
-    <div class="rb"><div class="rl">主教堂計分</div><p>城堡完成時，若城堡內有主教堂，每片版圖及盾牌徽章得 <strong>3 分</strong>（取代原本 2 分）。</p><div class="note">城堡在遊戲結束時未完成，得 0 分（不論有無主教堂）。</div></div>
-    <div class="rb"><div class="rl">首領</div><p>首領的派遣方式與一般手下相同，但計分時視為 <strong>2 名手下</strong>。計分後首領拿回，下個回合才能再次派遣。</p><div class="note">若將首領放在草原上擔任農夫，首領等同兩名手下，在農夫計分時一同計算。</div></div>
-  </div>
-</div>
-
-<!-- 建築師與豬 -->
-
-<div class="section" id="exp2" data-sec="建築師與豬" style="--jewel:var(--c-builder)">
-  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🐷</span><span class="sec-title">建築師與豬（商人與建築師）</span><span class="sec-tag">約＋15 分鐘</span><span class="sec-chev">▾</span></div>
-  <div class="sec-body">
-    <div class="rb"><div class="rl">內容</div><p>24 片新版圖、20 片貨物（葡萄酒 ×9、麥子 ×6、布匹 ×5）、6 名建築師（各色）、6 隻小豬（各色）。</p></div>
-    <div class="rb"><div class="rl">建築師</div>
-      <h3>如何派遣</h3><p>只能派遣到剛擺放版圖的城堡或道路上，且該城堡或道路上必須已有你的至少一名手下。</p>
-      <h3>額外回合效果</h3><p>在往後的回合中，若你擺放版圖讓建築師所在的城堡擴大或道路延長，可立即進行一個額外回合：抽取並擺放第二片版圖，可以派遣手下並計分。</p>
-      <ul><li>沒有第二個額外回合（即使第二片版圖再次延長也無法抽取第三片）。</li><li>只要道路尚未完成，每個回合都可以觸發額外回合。</li><li>一條道路可以有多名建築師。</li></ul>
-      <h3>建築師收回時機</h3><p>當城堡或道路不再有你的其他手下時，將建築師拿回。計分時建築師不計入人數。</p>
-      <div class="note">建築師是特殊人物，並非一般手下。</div>
-    </div>
-    <div class="rb"><div class="rl">小豬</div>
-      <h3>如何派遣</h3><p>只能派遣到剛擺放版圖的草原上，且草原上必須已有你的至少一名農夫。</p>
-      <h3>效果</h3><p>計算農夫得分時，小豬所在草原改為每座完整城堡得 <strong>4 分</strong>（取代原本 3 分）。</p>
-      <div class="note">小豬不計入農夫人數，只提升得分比率。若你和對手共同佔領同一草原，你的小豬依然給你較多分數。</div>
-    </div>
-    <div class="rb"><div class="rl">貨物</div>
-      <h3>城堡有貨物時</h3><p>城堡完成時，若城堡中有至少 1 件貨物：①城堡依常規計分。②放置完成版圖的玩家（城堡商人），拿取與城堡種類和數量相符的貨物。即使城堡中沒有你的手下，你也可以獲得貨物；商人只有完成版圖的玩家一人。</p>
-      <h3>遊戲結束時貨物計分</h3><p>擁有最多某項貨物（葡萄酒、麥子或布匹）的玩家得 <strong>10 分</strong>。並列者都得 10 分。</p>
-    </div>
-  </div>
-</div>
-
-<!-- 飛行器 -->
-
-<div class="section" id="biplane" data-sec="飛行器" style="--jewel:var(--c-flier)">
-  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">✈</span><span class="sec-title">飛行器</span><span class="sec-tag">約＋10 分鐘</span><span class="sec-chev">▾</span></div>
-  <div class="sec-body">
-    <div class="rb"><div class="rl">內容</div><p>8 片飛行器版圖、1 顆特製骰子（1、2、3 各兩面）。</p></div>
-    <div class="rb"><div class="rl">觸發時機</div><p>抽到飛行器版圖時，先依常規擺放。接著玩家可選擇：<br><strong>A）</strong>依基本遊戲規則派遣手下到該版圖的道路、城堡或草原。<br><strong>B）</strong>使用飛行器，將手下飛往另一片版圖。</p></div>
-    <div class="rb"><div class="rl">飛行器降落規則</div>
-      <p>選擇飛行方向（垂直、水平或斜角）後擲骰，骰子結果決定手下直線飛行的距離（1–3 片版圖）。</p>
-      <ul>
-        <li>必須降落在<strong>未完成</strong>的地形上（城堡、道路或修道院）。</li>
-        <li><strong>可以</strong>降落在已有其他玩家手下佔領的未完成建築上。</li>
-        <li>不能降落在草原上（即使沒有農夫也不行）。</li>
-        <li>不能降落在沒有版圖的地方。</li>
-      </ul>
-      <p>若指定版圖上沒有未完成的非草原地形，或該位置沒有版圖，則手下收回，本回合不能再派遣任何手下或特殊人物。</p>
-      <div class="note">若有多個適當落點，你決定落在哪個位置及什麼角色。</div>
-    </div>
-  </div>
-</div>
-
-<!-- 聖旨 -->
-
-<div class="section" id="edict" data-sec="聖旨" style="--jewel:var(--c-edict)">
-  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">📨</span><span class="sec-title">聖旨</span><span class="sec-tag">約＋15 分鐘</span><span class="sec-chev">▾</span></div>
-  <div class="sec-body">
-    <div class="rb"><div class="rl">內容</div><p>8 張聖旨（正反兩面）、6 名使者（與手下同色，為計分人物）。每位玩家在計分板上有一名使者和一名計分手下（兩人合稱「計分人物」）。</p></div>
-    <div class="rb"><div class="rl">計分時如何使用聖旨</div>
-      <p>每次計分後，從計分板上選一名計分人物向前移動。若計分人物停在深色格子上，可選擇使用聖旨功能，或直接獲得 2 分。操作完成後，將該張聖旨面朝下放在聖旨疊底層。</p>
-    </div>
-    <div class="rb"><div class="rl">聖旨功能說明</div>
-      <ul>
-        <li><strong>聖旨1</strong>：將分數最低的城堡計分，選擇你有手下的城堡（不須最多手下），計分方式與遊戲結束時相同，手下留原處。</li>
-        <li><strong>聖旨2</strong>：將分數最低的道路計分，效同聖旨1但改為道路。</li>
-        <li><strong>聖旨3</strong>：將分數最低的修道院計分，效同聖旨1但改為修道院。</li>
-        <li><strong>聖旨4</strong>：獲得 1 個額外回合，立即再抽 1 片版圖，依常規擺放，可以派遣手下並計分。</li>
-        <li><strong>聖旨5</strong>：每個盾牌徽章 2 分，檢查所有你有手下的城堡，每個盾牌徽章得 2 分。</li>
-        <li><strong>聖旨6</strong>：每名騎士 2 分，遊戲版圖上每有一名騎士（在城堡中的手下），便得 2 分，騎士仍留在城堡中。</li>
-        <li><strong>聖旨7</strong>：每名農夫 2 分，遊戲版圖上每有一名農夫，便得 2 分，農夫無需拿回。</li>
-        <li><strong>聖旨8</strong>：將 1 名計分人物並齊到另一人的位置，選一個至少有一名你的手下的建築，立即計分（分數方式與最終計分相同但只有你得分），計分後將這座建築中的 1 名手下拿回。</li>
-      </ul>
-      <div class="note">每次計分只能移動一名計分人物。若聖旨得分讓計分人物再次停在深色格，可以繼續連鎖抽取，無次數上限。</div>
-    </div>
-    <div class="rb"><div class="rl">最終計分</div>
-      <p>最終計分前，每位玩家將使者和手下分數相加，並前進對應步數，然後將使者放回遊戲盒中。最終計分時不再發放聖旨。</p>
-      <p><strong>教堂餐館搭配：</strong>聖旨1/2 含主教堂城堡或含餐館道路在最終計分時不帶來分數；聖旨6–7 首領也只算 1 名騎士/農夫。</p>
-    </div>
-  </div>
-</div>
-
-<!-- 擺渡人 -->
-
-<div class="section" id="ferry" data-sec="擺渡人" style="--jewel:var(--c-ferry)">
-  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">⛵</span><span class="sec-title">擺渡人</span><span class="sec-tag">約＋15 分鐘</span><span class="sec-chev">▾</span></div>
-  <div class="sec-body">
-    <div class="rb"><div class="rl">內容</div><p>8 片帶有湖泊的版圖（含 1 片起始版圖）、8 艘木製小船。</p></div>
-    <div class="rb"><div class="rl">派遣手下與放置渡船</div>
-      <p>可以選擇派遣一名手下到道路上。之後<strong>必須</strong>從桌上拿取 1 艘渡船放在湖上，連接版圖的兩條道路——不論是否派遣了手下，放置渡船都是強制的。渡船連接的兩條道路視為同一條連通的道路，湖泊為未被渡船連接道路的終點。</p>
-      <div class="note">若決定將手下派遣到道路上，必須從版圖上的三條或四條道路中選擇一條。</div>
-    </div>
-    <div class="rb"><div class="rl">移動渡船（往後的回合）</div>
-      <p>若放置的版圖延伸了至少一條有渡船連接的未完成道路，可以（也可以不移動）移動這艘渡船。移動後，必須讓版圖的兩條道路互相連接；若被延伸的道路上有多艘渡船，只能移動最接近新版圖的 1 艘。</p>
-      <div class="note">特殊狀況：若放置版圖造成多條道路被延伸，可移動每條道路上最接近新版圖的渡船，你決定移動順序。</div>
-    </div>
-    <div class="rb"><div class="rl">擴充搭配</div>
-      <p><strong>教堂餐館：</strong>渡船連接的道路上若沒有餐館，該片版圖值 1 分。<br><strong>建築師與豬：</strong>建築師所在道路單純因渡船移動而延伸，不觸發額外回合。</p>
-    </div>
-  </div>
-</div>
-
-<!-- 金礦 -->
-
-<div class="section" id="gold" data-sec="金礦" style="--jewel:var(--c-goldm)">
-  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🥇</span><span class="sec-title">金礦</span><span class="sec-tag">約＋10 分鐘</span><span class="sec-chev">▾</span></div>
-  <div class="sec-body">
-    <div class="rb"><div class="rl">內容</div><p>8 片帶金礦符號的版圖、1 張金塊計分表、16 塊木製金塊。</p></div>
-    <div class="rb"><div class="rl">觸發時機</div><p>抽到有金礦的版圖時，依常規擺放，接著在該版圖上以及與其相鄰（水平、垂直或對角）的版圖各擺放 1 塊金塊。金塊可放在已有金塊的版圖上。</p></div>
-    <div class="rb"><div class="rl">計分</div>
-      <p>每當有建築（道路、城堡或修道院）完成，在該建築上的玩家（手下最多者）獲得該建築版圖所有的金塊。</p>
-      <div class="sb"><div class="sb-t">金塊計分表（最終計分前換算）</div>
-        <div class="sr"><span>1–3 塊</span><span class="sv">每塊 1 分</span></div>
-        <div class="sr"><span>4–6 塊</span><span class="sv">每塊 2 分</span></div>
-        <div class="sr"><span>7–9 塊</span><span class="sv">每塊 3 分</span></div>
-        <div class="sr"><span>10 塊以上</span><span class="sv">每塊 4 分</span></div>
-      </div>
-      <div class="note">農夫不能獲得金塊。遊戲結束後，將剩餘在版圖上的金塊放回遊戲盒中。</div>
-    </div>
-    <div class="rb"><div class="rl">多人共同佔領時分配金塊</div><p>手下最多的玩家獨得所有金塊。若並列，從進行回合的玩家開始，依順時針方向輪流每人取一塊，直到所有金塊被瓜分完畢。</p></div>
-  </div>
-</div>
-
-<!-- 法師女巫 -->
-
-<div class="section" id="mage" data-sec="法師女巫" style="--jewel:var(--c-mage)">
-  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🧙</span><span class="sec-title">法師女巫</span><span class="sec-tag">約＋10 分鐘</span><span class="sec-chev">▾</span></div>
-  <div class="sec-body">
-    <div class="rb"><div class="rl">內容</div><p>8 片魔法版圖、1 名法師（紫色）、1 名女巫（橘色）。兩名魔法人物為公用配件，不屬於任何玩家。</p></div>
-    <div class="rb"><div class="rl">擺放版圖＋移動魔法人物</div>
-      <p>抽到魔法版圖時，先依常規擺放。接著在派遣手下之前，必須從法師和女巫兩名魔法人物中選擇一名擺放或移動。魔法人物必須被擺放在未完成的道路或城堡上，且兩名魔法人物不能出現在同一條道路或城堡中。</p>
-      <div class="note">移動魔法人物發生在計分之前。因此若你放下版圖讓某條道路或城堡完成，你可以趁計分前將法師移入以獲得加分，或將女巫移入以讓分數減半。</div>
-      <div class="note">若無法放置（沒有任何未完成城堡或道路），則將其中一名魔法人物移除放回備用。</div>
-    </div>
-    <div class="rb"><div class="rl">計分效果</div>
-      <ul>
-        <li><strong>法師</strong>：對於構成該建築的每片版圖，法師讓它的分數額外增加 1 分。</li>
-        <li><strong>女巫</strong>：有女巫在的建築，其分數<strong>除以二（無條件進位）</strong>。</li>
-      </ul>
-      <p>計分完成後，將該建築上的魔法人物移除，放到一旁備用。</p>
-    </div>
-    <div class="rb"><div class="rl">最終計分</div>
-      <p>最終計分時，法師和女巫依然會發揮作用（建築未完成也有效）。</p>
-      <div class="note">教堂餐館搭配：含主教堂城堡或含餐館道路遊戲結束時未完成，則值 0 分；若有法師，法師仍為建築每片版圖帶來額外 1 分（但盾牌徽章仍然價值 0 分）。</div>
-    </div>
-  </div>
-</div>
-
-<!-- 土匪 -->
-
-<div class="section" id="robber" data-sec="土匪" style="--jewel:var(--c-robber)">
-  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🦹</span><span class="sec-title">土匪</span><span class="sec-tag">約＋10 分鐘</span><span class="sec-chev">▾</span></div>
-  <div class="sec-body">
-    <div class="rb"><div class="rl">內容</div><p>8 片土匪符號版圖、6 名土匪（各色）。每位玩家取自己顏色的土匪，放在自己面前。</p></div>
-    <div class="rb"><div class="rl">觸發時機</div>
-      <p>抽到有土匪符號的版圖，先依常規擺放。接著，在派遣手下之前，可以選擇是否要將土匪放到計分板上。土匪必須放置在計分板上與至少一名其他玩家計分手下<strong>相同格</strong>的位置上。接著從左手邊的玩家開始，依順時針方向決定是否要將土匪放到計分板上。</p>
-    </div>
-    <div class="rb"><div class="rl">打劫分數</div>
-      <p>當有玩家的計分手下因得分而向前移動，若你的土匪和這名計分手下站在計分板上的同一格中，則獲得他得分的一半（<strong>無條件進位</strong>，例如對手得 5 分，你得 3 分），之後，將你的土匪拿回前面。得分玩家並不會因土匪的存在而損失分數。</p>
-    </div>
-    <div class="rb"><div class="rl">其他土匪規則</div>
-      <ul>
-        <li>其他玩家移動計分手下是為了記錄土匪打劫獲得的分數時，如果你的土匪和該玩家的計分手下站在同一格，你不能因此再次打劫（土匪之間不互相打劫）。</li>
-        <li>土匪有得分機會時，他不能選擇放棄以等待之後更高的得分機會。</li>
-        <li>自己的土匪不能打劫自己的計分手下。</li>
-      </ul>
-    </div>
-    <div class="rb"><div class="rl">最終計分</div>
-      <p>最終計分時，若你的土匪還站在計分板上，你獲得 3 分，並將土匪收回前面。</p>
-      <div class="note">聖旨搭配：當你的計分手下因土匪獲得的分數抵達了深色計分格，你可以抽取一張聖旨。</div>
-    </div>
-  </div>
-</div>
-
-<!-- 麥田圈 -->
-
-<div class="section" id="crop" data-sec="麥田圈" style="--jewel:var(--c-crop)">
-  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🌾</span><span class="sec-title">麥田圈</span><span class="sec-tag">約＋10 分鐘</span><span class="sec-chev">▾</span></div>
-  <div class="sec-body">
-    <div class="rb"><div class="rl">內容</div><p>6 片有麥田圈的版圖。注意：麥田圈是道路的終點，也是草原的邊界，不得將手下派遣到麥田圈上。</p></div>
-    <div class="rb"><div class="rl">觸發時機</div><p>抽到麥田圈版圖時，依常規完成你的回合（①擺放版圖 → ②派遣手下 → ③計分），之後才執行麥田圈效應。</p></div>
-    <div class="rb"><div class="rl">麥田圈效應</div>
-      <p>你必須從以下效應選擇一個，接著由你左邊的玩家開始，依順時針順序，每位玩家輪流執行此效應：</p>
-      <ul>
-        <li><strong>A 效應（可以）</strong>：可以派遣一名手下，到自己已在版圖上手下的身邊（同一位置上）。</li>
-        <li><strong>B 效應（必須）</strong>：必須從遊戲版圖上將一名自己的手下收回面前。</li>
-      </ul>
-    </div>
-    <div class="rb"><div class="rl">效應影響的手下類型</div>
-      <ul>
-        <li>乾草叉麥田圈影響農夫（草原上的手下）。</li>
-        <li>鎚子麥田圈影響強盜（道路上的手下）。</li>
-        <li>盾牌麥田圈影響騎士（城堡裡的手下）。</li>
-      </ul>
-      <div class="note">選擇 A 效應時，玩家只能派遣同類型手下到同類型手下身邊。如果一位玩家無法執行效應（沒有對應類型手下在場），則跳過他。主動玩家最後執行。</div>
-    </div>
-  </div>
-</div>
-
-<!-- 公主火龍 -->
-
-<div class="section" id="exp3" data-sec="公主火龍" style="--jewel:var(--c-dragon)">
-  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🐉</span><span class="sec-title">公主火龍（公主與火龍）</span><span class="sec-tag">約＋40 分鐘</span><span class="sec-chev">▾</span></div>
-  <div class="sec-body">
-    <div class="rb"><div class="rl">內容</div><p>30 片新版圖（含火山符號、火龍符號、公主符號、任意門符號）、1 隻木製火龍、1 名木製仙女。</p></div>
-    <div class="rb"><div class="rl">🌋 火山版圖</div>
-      <p>抽到火山版圖時，依常規擺放，<strong>不能</strong>派遣手下，但可以移動仙女。接著將火龍移至這座火山上（不論火龍是否已在場上）。輪到下一位玩家進行回合。</p>
-      <div class="note">在抽到火山版圖之前，火龍尚未出現。若抽到有火龍符號的版圖時火龍尚未出現，將該版圖面朝上放到一旁，重抽一張繼續遊戲。火山出現後，把放到一旁的火龍版圖全部重新洗回版圖疊中。若火龍已在場上再次抽到火山版圖，火龍直接移到新的火山位置，不觸發肆虐。</div>
-    </div>
-    <div class="rb"><div class="rl">🔥 火龍版圖（火龍肆虐）</div>
-      <p>抽到火龍版圖時，依常規擺放，可以派遣手下。接著遊戲暫時中斷，<strong>火龍要出來肆虐了！</strong></p>
-      <h3>火龍肆虐流程</h3>
-      <p>從進行回合的玩家開始，依順時針順序，每個人輪流將火龍水平或垂直移動一步，共移動六步（非死路情況）。</p>
-      <ul>
-        <li>在一次肆虐中，火龍絕對不會造訪同一片版圖兩次。</li>
-        <li>火龍絕對不會走到有仙女的版圖上。</li>
-        <li>火龍所行經或停留的版圖上，若有手下或其他特殊人物，火龍吃掉他們，歸還所屬玩家的面前。</li>
-      </ul>
-      <div class="sb"><div class="sb-t">火龍的餐點（會吃的東西）</div>
-        <div class="sr"><span>基本版 手下</span><span class="sv">✓ 會吃</span></div>
-        <div class="sr"><span>基本版 修道院長</span><span class="sv">✓ 會吃</span></div>
-        <div class="sr"><span>擴充1 首領</span><span class="sv">✓ 會吃</span></div>
-        <div class="sr"><span>擴充2 建築師、小豬</span><span class="sv">✓ 會吃</span></div>
-        <div class="sr"><span>法師女巫 法師、女巫</span><span class="sv">✓ 會吃</span></div>
-      </div>
-      <div class="sb"><div class="sb-t">火龍瘦身菜單（不吃的東西）</div>
-        <div class="sr"><span>仙女</span><span class="sv">✗ 不吃</span></div>
-        <div class="sr"><span>山城和伯爵城堡中的手下和首領</span><span class="sv">✗ 不吃</span></div>
-        <div class="sr"><span>版圖（包含其他類型版圖）</span><span class="sv">✗ 不吃</span></div>
-      </div>
-      <div class="note">死路：當火龍還未走滿六步，但已經沒有任何符合規則的版圖可以前進，火龍肆虐立即結束。</div>
-    </div>
-    <div class="rb"><div class="rl">👑 公主版圖</div>
-      <p>抽到公主版圖時，依常規擺放。如果你將版圖連接到一座已有手下的城堡，<strong>可以訪回</strong>這座城堡中的一名騎士，將他歸還所屬玩家面前。</p>
-      <p>若你訪回一名騎士，則<strong>不得</strong>派遣手下到剛擺放的版圖上；若你並未訪回任何騎士（包括連接的城堡中沒有任何騎士的情況），則可以依常規派遣手下。</p>
-    </div>
-    <div class="rb"><div class="rl">🚪 任意門版圖</div>
-      <p>擺放任意門版圖後，可以派遣手下到這片版圖或到任何一片版圖上，但須遵守所有其他玩家手下的規則，例如不能派遣到已被佔領的區域，也不能將手下派遣到已經完成的區域。若整個版圖上找不到任何合法地形可放，本回合不能派遣任何手下。</p>
-    </div>
-    <div class="rb"><div class="rl">🧚 仙女</div>
-      <p>仙女是特殊人物，不屬於任何玩家，遊戲開始時放在一旁備用。</p>
-      <h3>仙女移動</h3><p>移動仙女<strong>取代</strong>派遣手下的動作，兩者只能擇一。你可以將仙女放到你的任何一名手下旁邊，包含草原上的農夫。</p>
-      <h3>仙女效果（當仙女在你的手下身邊）</h3>
-      <ul>
-        <li><strong>① 每回合開始立即獲得 1 分</strong>：在你的正常回合開始時，如果仙女在你的手下旁邊，你立即獲得 1 分（建築師額外回合不計）。</li>
-        <li><strong>② 火龍肆虐時不被攻擊</strong>：火龍不能走到有仙女的版圖上，該版圖上所有的手下都能免於難。</li>
-        <li><strong>③ 計分時獲得額外 3 分</strong>：當仙女在你的手下旁邊的區域計分時，不論這名手下是否得分，仙女都會為你帶來額外 3 分。計分完後，將手下拿回，但仙女留在原地。</li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<!-- 橋樑山城 -->
-
-<div class="section" id="exp8" data-sec="橋樑山城" style="--jewel:var(--c-bridge)">
-  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🌉</span><span class="sec-title">橋樑山城（橋樑、山城與市集）</span><span class="sec-tag">約＋40 分鐘</span><span class="sec-chev">▾</span></div>
-  <div class="sec-body">
-    <div class="rb"><div class="rl">內容</div><p>12 片新版圖（8 片含「市集」圖案）、12 片山城、12 座橋樑。2–4 人：每人各取 3 座橋樑和 3 片山城；5–6 人：每人各取 2 座橋樑和 2 片山城。</p></div>
-    <div class="rb"><div class="rl">橋樑</div>
-      <h3>如何擺放橋樑</h3>
-      <p>當你擺放一片版圖後，可以額外蓋一座橋樑。橋樑等同道路，從版圖的一側延伸到另一側。可以將橋樑蓋在剛才擺放的版圖上，或相鄰（上下左右）的版圖上，兩個橋墩必須站在草原上（不能站在城堡、道路或河流上）。</p>
-      <p>橋樑兩端不需要接既有道路。若兩端都是草原，視為道路兩端已封住，擺放當下<strong>立即完成計分 1 分</strong>。</p>
-      <ul>
-        <li>計分時，一座橋樑等於一片版圖上的道路，但它不是道路的開端或結束。</li>
-        <li>可以透過蓋橋樑來連接兩座橋樑；每片版圖只能容納一座橋樑。</li>
-        <li>橋樑可以放在已有人佔領的修道院上。</li>
-        <li>不能將橋樑蓋在已有其他玩家手下或遊戲配件的版圖上。</li>
-      </ul>
-      <div class="note">特殊規則：擺放版圖時可以透過橋樑將道路與草原連接，只要在該回合蓋一座橋樑來延伸這條道路即可。</div>
-    </div>
-    <div class="rb"><div class="rl">山城</div>
-      <h3>完成小城壁並改建為山城</h3>
-      <p>當你完成一個小城堡（由兩片版圖組成），佔領該城堡的玩家可以決定：如常規一般，獲得 4 分並將手下收回；或者，在該城堡放上一片山城，讓手下留在該處，稍晚再進行計分。</p>
-      <p><strong>沒有手下在城堡裡，就不能蓋山城。</strong></p>
-      <div class="note">小城上的手下不論是被派遣到第一片還是第二片版圖上，並不影響蓋山城的權益。</div>
-      <h3>獲得山城的分數</h3>
-      <p>「山城周圍」包含山城的那 2 片版圖，以及其左側 2 片版圖和右側 2 片版圖，共 6 片版圖。</p>
-      <p>當你的山城周圍有某一建築完成時，你的山城將獲得與該建築等量的分數，然後將在山城上的手下取回，但山城留在該處直到遊戲結束。</p>
-      <ul>
-        <li>你的山城會獲得接下來<strong>最早</strong>在你山城周圍完成的建築的分數，你不能放棄讓手下繼續等待。</li>
-        <li>若同一回合內有多個建築同時完成，你可以選擇其中一個作為山城的得分來源。</li>
-        <li>不論最早完成的建築是否為任何玩家帶來分數，你的山城都會獲得該分數（包含 0 分）。</li>
-        <li>如果最早完成的建築由你佔領，等於你獲得兩次分數：一次來自該建築，一次來自山城。</li>
-        <li>若有多座尚未計分的山城落在彼此周圍，當其中一個山城計分時，會引發其他山城進行計分，這些交互影響的山城都獲得相同的分數。</li>
-        <li><strong>遊戲結束前若周圍 6 片版圖都沒有任何建築完成，山城得 0 分，手下也無法收回。</strong></li>
-      </ul>
-      <div class="note">最終計分時，在計算農夫的得分時，每座山城將帶來 4 分，一般的城堡則維持 3 分。</div>
-    </div>
-    <div class="rb"><div class="rl">市集</div>
-      <p>抽到一片市集版圖時，先依正常的回合流程來進行：①擺放版圖 → ②派遣手下 → ③計分。</p>
-      <h3>市集競標流程</h3>
-      <p>當你完成正常回合後，需要舉辦市集競標。若覆蓋的版圖數量不足玩家人數，則略過此步驟。</p>
-      <p>翻開與玩家人數等量的版圖，由你左邊的玩家開始，他選擇一片版圖，並出價（<strong>最低 0 分，不能喊負數</strong>），然後其他玩家依順時針方向輪流，一有機會出更高的分數或棄牌。所有玩家都過一次後，選擇這片版圖的玩家必須：</p>
-      <ul>
-        <li>購買這片版圖，付出競標費用（自己扣分），或者</li>
-        <li>賣出這片版圖給出價最高的玩家，並向他收取競標費用（自己加分）。</li>
-      </ul>
-      <p>若只剩最後一片版圖，尚未購買版圖的玩家<strong>免費</strong>得到它，不需要競標。</p>
-      <p>不論你是否有分數，你的分數都可能會到達零以下，但沒有關係，這可能會發生在遊戲初期就抽到市集版圖的情況下。</p>
-      <div class="note">市集無連鎖反應：市集競標流程中出現另一片市集版圖時，不會啟動市集功能，要等到每位玩家都完成了擺放版圖、派遣手下、計分後，新出現的市集版圖才會啟動市集競標功能。</div>
-      <p><strong>變體市集（無競標）：</strong>你抽到一片市集版圖，依照常規完成你的回合後，翻開與玩家人數等量的版圖，由你左邊的玩家開始，輪流選擇一片版圖，然後依照用這片版圖進行一個正常的回合，之後依常規繼續遊戲。</p>
-    </div>
-  </div>
-</div>
-
-<div id="noResults" style="text-align:center;color:var(--text-dim);padding:2rem;font-size:.88rem;display:none">找不到相關規則，請試試其他關鍵字。</div>
-</main>
-
-<button id="sfab" aria-label="搜尋">🔍</button>
-
-<div id="sov">
-  <div class="sbar"><span class="sico">🔍</span><input type="text" id="sinp" placeholder="搜尋規則關鍵字，例如：農夫、火龍、計分…" autocomplete="off"><button id="scls">✕</button></div>
-  <div id="scnt"></div>
-  <div id="sres"></div>
-</div>
-
-<nav id="bnav">
-  <a class="ni" href="#beginner" onclick="nv(event,'beginner')"><span class="nic">🌱</span><span class="nil">新手入門</span></a>
-  <a class="ni" href="#turnflow" onclick="nv(event,'turnflow')"><span class="nic">🔄</span><span class="nil">回合流程</span></a>
-  <a class="ni" href="#faq" onclick="nv(event,'faq')"><span class="nic">⚖</span><span class="nil">裁判手冊</span></a>
-  <div class="nd"></div>
-  <a class="ni" href="#base" onclick="nv(event,'base')"><span class="nic">📜</span><span class="nil">基本規則</span></a>
-  <a class="ni" href="#river" onclick="nv(event,'river')"><span class="nic">🌊</span><span class="nil">河流</span></a>
-  <a class="ni" href="#abbot" onclick="nv(event,'abbot')"><span class="nic">🌸</span><span class="nil">修道院長</span></a>
-  <a class="ni" href="#exp1" onclick="nv(event,'exp1')"><span class="nic">🏰</span><span class="nil">教堂餐館</span></a>
-  <a class="ni" href="#exp2" onclick="nv(event,'exp2')"><span class="nic">🐷</span><span class="nil">建築師豬</span></a>
-  <a class="ni" href="#biplane" onclick="nv(event,'biplane')"><span class="nic">✈</span><span class="nil">飛行器</span></a>
-  <a class="ni" href="#edict" onclick="nv(event,'edict')"><span class="nic">📨</span><span class="nil">聖旨</span></a>
-  <a class="ni" href="#ferry" onclick="nv(event,'ferry')"><span class="nic">⛵</span><span class="nil">擺渡人</span></a>
-  <a class="ni" href="#gold" onclick="nv(event,'gold')"><span class="nic">🥇</span><span class="nil">金礦</span></a>
-  <a class="ni" href="#mage" onclick="nv(event,'mage')"><span class="nic">🧙</span><span class="nil">法師女巫</span></a>
-  <a class="ni" href="#robber" onclick="nv(event,'robber')"><span class="nic">🦹</span><span class="nil">土匪</span></a>
-  <a class="ni" href="#crop" onclick="nv(event,'crop')"><span class="nic">🌾</span><span class="nil">麥田圈</span></a>
-  <a class="ni" href="#exp3" onclick="nv(event,'exp3')"><span class="nic">🐉</span><span class="nil">公主火龍</span></a>
-  <a class="ni" href="#exp8" onclick="nv(event,'exp8')"><span class="nic">🌉</span><span class="nil">橋樑山城</span></a>
-</nav>
-
-<script>
-function tog(h){h.closest('.section').classList.toggle('closed');}
-function nv(e,id){
-  e.preventDefault();
-  const el=document.getElementById(id);
-  if(!el)return;
-  el.classList.remove('closed','sec-hidden');
-  window.scrollTo({top:el.getBoundingClientRect().top+scrollY-8,behavior:'smooth'});
-  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
-  e.currentTarget.classList.add('active');
-}
-
-const sfab=document.getElementById('sfab'),sov=document.getElementById('sov'),
-      sinp=document.getElementById('sinp'),scls=document.getElementById('scls'),
-      scnt=document.getElementById('scnt'),sres=document.getElementById('sres');
-
-sfab.addEventListener('click',()=>{sov.classList.add('open');setTimeout(()=>sinp.focus(),150);});
-scls.addEventListener('click',closeSrch);
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSrch();});
-
-function closeSrch(){
-  sov.classList.remove('open');sinp.value='';sres.innerHTML='';scnt.textContent='';
-  document.querySelectorAll('.section.sec-hidden').forEach(s=>s.classList.remove('sec-hidden'));
-}
-
-sinp.addEventListener('input',function(){
-  const q=this.value.trim().toLowerCase();
-  sres.innerHTML='';
-  if(!q){scnt.textContent='';return;}
-  const seen=new Map();
-  document.querySelectorAll('.section[data-sec]').forEach(sec=>{
-    sec.querySelectorAll('.rb,.fq,.fa,p,li').forEach(bl=>{
-      if(!seen.has(sec)&&bl.textContent.toLowerCase().includes(q))
-        seen.set(sec,{sec,name:sec.dataset.sec,snip:gsnip(bl.textContent,q)});
-    });
-  });
-  const hits=[...seen.values()];
-  if(!hits.length){scnt.textContent='沒有找到相關規則';return;}
-  scnt.textContent=`找到 ${hits.length} 個相關段落`;
-  hits.forEach(h=>{
-    const a=document.createElement('a');
-    a.className='shit';a.href='#'+h.sec.id;
-    a.innerHTML=`<div class="hsec">${h.name}</div>${hlsnip(h.snip,q)}`;
-    a.addEventListener('click',e=>{
-      e.preventDefault();closeSrch();
-      setTimeout(()=>{h.sec.classList.remove('closed','sec-hidden');window.scrollTo({top:h.sec.getBoundingClientRect().top+scrollY-8,behavior:'smooth'});},80);
-    });
-    sres.appendChild(a);
-  });
-});
-
-function gsnip(t,q){const lo=t.toLowerCase(),i=lo.indexOf(q);if(i===-1)return t.slice(0,120);const s=Math.max(0,i-40),e=Math.min(t.length,i+q.length+80);return(s>0?'…':'')+t.slice(s,e)+(e<t.length?'…':'');}
-function hlsnip(t,q){return t.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'),m=>`<mark class="hl">${m}</mark>`);}
-
-/* TURN FLOW */
-const EXPS=[
-  {id:'river',name:'河流',color:'#0984e3'},{id:'abbot',name:'修道院長',color:'#6c5ce7'},
-  {id:'inn',name:'教堂餐館',color:'#c0392b'},{id:'builder',name:'建築師與豬',color:'#e67e22'},
-  {id:'flier',name:'飛行器',color:'#00b894'},{id:'messenger',name:'聖旨',color:'#8e44ad'},
-  {id:'ferry',name:'擺渡人',color:'#2980b9'},{id:'gold',name:'金礦',color:'#d4a017'},
-  {id:'mage',name:'法師女巫',color:'#a855f7'},{id:'robber',name:'土匪',color:'#b03a2e'},
-  {id:'crop',name:'麥田圈',color:'#27ae60'},{id:'dragon',name:'公主火龍',color:'#e17055'},
-  {id:'bridge',name:'橋樑山城',color:'#636e72'},
-];
-const EM=Object.fromEntries(EXPS.map(e=>[e.id,e]));
-const act=new Set();
-const FLOW=[
-  {num:'1',title:'放版圖',steps:[
-    {t:'抽一片版圖，依規則擺放（地形邊緣必須吻合）',r:[]},
-    {t:'若無法擺放：棄置並重抽',r:[],c:'極少數情況'},
-    {t:'若為河流版圖：必須延長河流，不可回折或連放同方向兩片',r:['river'],c:'若版圖疊用完，改用普通版圖'},
-    {t:'若為金礦版圖：在此版圖及任一相鄰版圖（含對角）各放 1 塊金塊',r:['gold']},
-    {t:'若為魔法版圖：必須移動法師或女巫到任一未完成道路或城堡',r:['mage'],c:'兩者不可在同一地形；若無法放置則移除'},
-    {t:'若為火山版圖：將火龍移至此版圖，本回合不可派手下',r:['dragon']},
-    {t:'若放下版圖後讓法師與女巫同處一地形：立即移動其中一個',r:['mage']},
-    {t:'可選：將土匪放到計分板上，與另一玩家的計分標記同格；或移動已在計分板上的土匪',r:['robber']},
-    {t:'可選：在剛放的版圖或相鄰版圖的草原上蓋橋樑（不可蓋在已有對手手下或配件的版圖）',r:['bridge']},
-  ]},
-  {num:'2',title:'派遣手下（可選）',steps:[
-    {t:'可將 1 名手下放到此版圖的道路、城堡、修道院或草原上',r:[],c:'該地形不能已被任何人佔領'},
-    {t:'或：使用飛行器，擲骰決定距離（1–3 片），降落在未完成的道路／城堡／修道院',r:['flier'],c:'可降落已有他人手下的未完成地形；不可落草原；無可落點則收回'},
-    {t:'或：將建築師派到已有自己手下的城堡或道路上',r:['builder']},
-    {t:'或：將小豬派到已有自己農夫的草原上（農夫計分每城 +1 分）',r:['builder']},
-    {t:'或：將修道院長放到修道院或花園上（不可在花園放普通手下）',r:['abbot']},
-    {t:'或：取回已在場的修道院長並計分（不派新手下）',r:['abbot'],c:'計分方式同修道院，無需等九宮格放滿'},
-    {t:'或：派遣首領（計為 2 名手下），規則同普通手下',r:['inn']},
-    {t:'若為任意門版圖：可將手下派到任何版圖（不可已完成或已被佔領地形）',r:['dragon']},
-    {t:'若未派手下：可移動仙女到自己某名手下所在的版圖旁',r:['dragon']},
-    {t:'若為公主版圖且連接了已有騎士的城堡：可選擇驅逐該城堡中一名騎士（驅逐後不可再派手下）',r:['dragon']},
-    {t:'若剛完成小城堡（2 片版圖）：可選蓋山城（取代立即計分的 4 分，等待周圍地形完成再得分）',r:['bridge']},
-    {t:'若為湖泊版圖：必須放置渡船連接湖泊的兩條道路（強制，不論是否派手下）',r:['ferry'],c:'渡船連接的兩條道路視為同一條；湖泊為未連接道路的終點'},
-    {t:'若延伸了有渡船的道路：可選擇移動離新版圖最近的渡船（非強制）',r:['ferry']},
-  ]},
-  {num:'3',title:'計分',steps:[
-    {t:'若有地形完成：計分，並將手下收回',r:[]},
-    {t:'道路：每片版圖 1 分',r:[]},{t:'城堡：每片版圖 2 分＋每個盾牌徽章 2 分',r:[]},{t:'修道院：被 8 片版圖圍滿共 9 分',r:[]},
-    {t:'含湖濱餐館的完成道路：每片 2 分；若未完成：0 分',r:['inn']},
-    {t:'含主教堂的完成城堡：每片及每個盾牌 3 分；若未完成：0 分',r:['inn']},
-    {t:'完成地形含法師：每片版圖額外 +1 分',r:['mage']},
-    {t:'完成地形含女巫：該地形總分除以二（無條件進位）',r:['mage']},
-    {t:'地形完成時：將該地形版圖上的金塊分配給佔領者（手下最多者拿走；並列時依順時針輪流各取一塊）',r:['gold']},
-    {t:'計分後，移動計分手下或使者；若停在深色格（5、10、15…）：抽聖旨牌，選擇執行效果或得 2 分',r:['messenger']},
-  ]},
-  {num:'4',title:'計分後（特定擴充觸發）',req:['builder','dragon','crop','bridge'],steps:[
-    {t:'【建築師】若城堡擴大或道路延長且建築師仍在其上：進行一次額外回合（放圖→派手下→計分），僅限一次額外回合',r:['builder']},
-    {t:'【公主火龍】若為火龍版圖：火龍肆虐——由放版圖的玩家開始，依順時針每人移動火龍一步，共六步；吃掉路過版圖上所有手下（農夫也算）',r:['dragon'],c:'火龍不走重複版圖；不走仙女所在版圖；走入法師/女巫版圖時移除該魔法人物'},
-    {t:'【麥田圈】若為麥田圈版圖：選擇 A 效應（各玩家可選擇追加同類型手下）或 B 效應（各玩家必須強制收回一名同類型手下）',r:['crop'],c:'無對應手下在場者跳過；主動玩家最後執行'},
-    {t:'【橋樑山城】若為市集版圖：翻出與玩家數相同的版圖進行競標；贏得版圖的玩家立即進行一個正常回合（放圖→派手下→計分）',r:['bridge']},
-  ]},
-];
-
-function rToggles(){
-  const w=document.getElementById('expToggles');w.innerHTML='';
-  EXPS.forEach(e=>{
-    const b=document.createElement('button');
-    b.className='etog'+(act.has(e.id)?' on':'');b.textContent=e.name;
-    const on=act.has(e.id);
-    b.style.cssText=`border-color:${e.color};color:${on?'#fff':'rgba(255,255,255,.4)'};background:${on?e.color:'transparent'}`;
-    b.onclick=()=>{act.has(e.id)?act.delete(e.id):act.add(e.id);rToggles();rFlow();};
-    w.appendChild(b);
-  });
-}
-
-function rFlow(){
-  const d=document.getElementById('flowDisplay');d.innerHTML='';
-  FLOW.forEach(ph=>{
-    if(ph.req&&ph.req.length&&!ph.req.some(r=>act.has(r)))return;
-    const vs=ph.steps.filter(s=>!s.r.length||s.r.some(r=>act.has(r)));
-    if(!vs.length)return;
-    const pe=document.createElement('div');pe.className='fp';
-    const hd=document.createElement('div');hd.className='fph';
-    hd.innerHTML=`<span class="pnum">${ph.num}</span><span class="ptitle">${ph.title}</span>`;
-    pe.appendChild(hd);
-    const se=document.createElement('div');se.className='fsteps';
-    vs.forEach(step=>{
-      const base=!step.r.length;
-      const el=document.createElement('div');el.className='fstep';
-      const dot=document.createElement('span');dot.className='fdot';
-      dot.style.background=base?'var(--gold)':(EM[step.r.find(r=>act.has(r))??step.r[0]]?.color??'#888');
-      el.appendChild(dot);
-      const tw=document.createElement('div');tw.className='ftxt';
-      let html='';
-      if(!base)step.r.filter(r=>act.has(r)).forEach(r=>{const ex=EM[r];if(ex)html+=`<span class="fbadge" style="background:${ex.color}">${ex.name}</span>`;});
-      html+=step.t;
-      if(step.c)html+=`<span class="fcond">⚠ ${step.c}</span>`;
-      tw.innerHTML=html;el.appendChild(tw);se.appendChild(el);
-    });
-    pe.appendChild(se);d.appendChild(pe);
-  });
-}
-
-document.addEventListener('DOMContentLoaded',()=>{rToggles();rFlow();});
-if(document.readyState!=='loading'){rToggles();rFlow();}
-</script>
-
-</body>
-</html>
+卡卡頌
+BIG BOX · 規則典籍
+繁體中文
+ENGLISH
+🌱
+新手入門指南
+第一次玩看這裡
+▾
+每回合口訣
+	•	① 抽、放：抽一片版圖，放到已有版圖的旁邊，邊緣地形必須吻合。
+	•	② 派（可選）：可以將一名手下放到這片版圖的某個地形，但該地形不能已有任何人的手下。
+	•	③ 算分：若剛才的動作完成了某個地形，立即計分並拿回手下。
+最常見的新手誤區
+	•	手下不夠用？正常的。手下有限，策略就在等地形完成時拿回。
+	•	農夫不會回來？正確。農夫（平躺放置）遊戲中不回手，只在遊戲結束時計分。
+	•	盾牌怎麼算？城堡完成時一起計，遊戲中每個+2分，未完成時每個+1分。
+	•	可以強佔別人的地形嗎？不行。但地形因版圖連接合併後，手下多者得分（並列則共同得分）。
+	•	修道院什麼時候完成？周圍 8 格全部放滿版圖時，共 9 分。
+手下的角色名稱
+	•	站在道路上 → 強盜（Thief）
+	•	站在城堡裡 → 騎士（Knight）
+	•	站在修道院上 → 修士（Monk）
+	•	平躺在草原上 → 農夫（Farmer）
+角色名稱在麥田圈、火龍餐點清單等擴充規則中會出現。
+🔄
+互動回合流程
+選擇你的擴充
+▾
+選擇使用中的擴充
+
+⚖
+裁判手冊：常見爭議與跨擴充規則
+有衝突時查這裡
+▾
+金礦
+Q：放下金礦版圖的同一回合，若該版圖完成了某個地形，可以立即拿走金塊嗎？
+可以。正確順序：①放版圖 → ②放金塊 → ③計分並分配金塊。金塊在計分前已放置，可在同一回合拿走。
+Q：農夫可以拿金塊嗎？
+不行。農夫在遊戲中或最終計分時都無法獲得金塊。
+教堂餐館（酒館與大教堂）
+Q：可以把主教堂放到別人的城堡裡嗎？
+可以。合法干擾——對手未完成該城堡得 0 分。同樣，餐館也可以放到別人的道路上。
+Q：含餐館或主教堂的地形遊戲結束時未完成，還有分嗎？
+沒有，得 0 分。比一般未完成地形（還有基本分）更慘。
+Q：首領（大手下）計入共同佔領的人數嗎？
+算 2 名手下。計算多數時，首領等同 2 名手下。
+建築師與豬
+Q：火龍會吃掉建築師和小豬嗎？
+會。大盒版說明書的火龍餐點清單中，建築師和小豬都在列，被吃後歸還玩家。
+Q：建築師被吃掉後，還能進行額外回合嗎？
+不行。建築師不在版圖上，額外回合條件不成立。
+Q：小豬被吃掉後，農夫計分怎麼算？
+回到每座城堡 3 分。小豬加成消失。
+Q：額外回合中又放下麥田圈版圖，麥田圈效應何時執行？
+先完成額外回合全部步驟（放圖、派手下、計分），再執行麥田圈效應。
+公主火龍
+Q：仙女的每回合 1 分，在建築師的額外回合開始時也算嗎？
+不算。仙女 1 分只在「正常回合」開始時觸發，建築師的額外回合不計。
+Q：仙女可以保護手下不被公主版圖趕走嗎？
+不能。仙女只對火龍有保護效果，對公主版圖無效。被公主趕走的騎士也不能獲得仙女 3 分加成。
+Q：任意門可以把手下放到已有人的地形嗎？
+不行。任意門遵循一般派遣規則——不能放到已被佔領或已完成的地形。
+Q：草原上的農夫會被火龍吃掉嗎？
+會。火龍走到某片版圖時，該版圖上所有手下（包含農夫）都會被吃掉。
+Q：火龍走到已計分完成但手下仍在的版圖，手下會被吃嗎？
+會。火龍不區分已完成或未完成，只要版圖上有手下就吃。
+法師女巫 × 公主火龍
+Q：火龍會吃掉法師或女巫嗎？
+會。根據官方 FAQ，法師和女巫都在火龍餐點清單上，被吃後放回備用。
+Q：放下魔法版圖後，法師與女巫因此被迫在同一地形，怎麼辦？
+由放版圖的玩家立即移動其中一名，在計分之前處理完畢。
+Q：法師/女巫所在地形計分時，若地形上沒有任何手下，效果還算嗎？
+仍然有效。即使沒有手下，法師仍為每片版圖加分；女巫仍對總分取半（無條件進位）。法師和女巫不能同時在同一地形，因此不會同時生效。
+麥田圈
+Q：選擇 B 效應（強制收回），某玩家沒有對應類型手下在場，怎麼辦？
+跳過該玩家。沒有對應手下在版圖上者直接跳過。
+Q：選擇 A 效應（派遣），可以不派嗎？
+可以選擇不派。A 效應對每位玩家是「可以」，不是強制。
+Q：A 效應派遣的手下，可以放到已被對手佔領的同一地形嗎？
+可以，但必須緊靠自己已有的手下。這等同正常的共同佔領機制。
+擺渡人
+Q：建築師所在道路因渡船移動而延伸，可以觸發額外回合嗎？
+不行。額外回合只在玩家實際擺放新版圖時觸發，渡船移動不算。
+Q：渡船移動後，若道路兩端都被封住，道路立即計分嗎？
+是的，立即計分。只要道路兩端都封住，不論是版圖擺放還是渡船移動造成的，都立即計分。
+土匪
+Q：土匪因打劫而移動，新位置又有計分標記，會再度打劫嗎？
+不會。土匪跟著標記移動到新格後，不再觸發連鎖打劫。
+Q：同一格有多個土匪，每個都能打劫嗎？
+是的，每個土匪獨立觸發。每個土匪主人各自得到被劫玩家得分的一半（無條件進位）。
+Q：聖旨觸發的得分，土匪可以打劫嗎？
+可以。只要是計分並移動計分標記的動作，土匪都可以打劫。
+橋樑山城
+Q：山城旁的農夫，山城算幾分？
+4 分（一般完成城堡是 3 分）。
+Q：火龍可以進入山城所在的版圖嗎？
+不行。山城中的手下受到保護，效果等同伯爵城堡。
+Q：市集競標可以讓分數降到 0 以下嗎？
+可以。分數可以為負，是正常情況。
+飛行器
+Q：飛行落點是一個被對手佔領的未完成城堡，可以降落嗎？
+可以。飛行器可降落在任何未完成的道路、城堡或修道院，不論是否已有他人手下。唯一禁止的是草原和已完成地形。
+Q：骰子結果指向的位置根本沒有版圖，怎麼辦？
+手下直接收回。該回合無法派遣任何手下或特殊人物。
+聖旨
+Q：一回合完成多個地形，可以移動不同的計分人物嗎？
+可以。每個獨立計分機會都可以選擇移動哪個計分人物，但每次計分必須由同一個人物移動全部分數。
+Q：聖旨觸發後，若得分又讓計分人物落在深色格，可以再抽一張聖旨嗎？
+可以，可以連鎖，無限次數。
+📜
+基本規則
+主遊戲
+▾
+遊戲概要
+2–6 人遊戲，共 72 片地形版圖，每人 7 名手下（Meeple），各取 1 片起始版圖開始。
+每回合三步驟
+① 擺放版圖
+抽 1 片版圖，必須與桌面已有版圖的地形邊相符地擺放。極少數情況無法擺放時，移出遊戲，再抽一片。
+② 派遣手下（可選）
+可將 1 名手下放到剛擺放版圖的某個地形上。手下不得放在已被其他手下佔領的相同地形（包括自己的手下）。
+③ 計分
+若剛擺放的版圖讓某個地形完成，立即計分，並將手下拿回。
+計分規則
+遊戲中（地形完成時）
+道路（每片版圖）
+1 分
+城堡（每片版圖）
+2 分
+城堡盾牌徽章（每個）
++2 分
+修道院（九宮格全滿）
+9 分
+遊戲結束（最終計分）
+未完成道路（每片）
+1 分
+未完成城堡（每片）
+1 分
+未完成城堡盾牌（每個）
++1 分
+未完成修道院（本身＋周圍每片）
+各 1 分
+農夫（每座鄰接的完整城堡）
+3 分
+共同佔領
+若一條道路或城堡由多名玩家共同佔領，手下最多者獨得全部分數；並列時每人都得全部分數。
+農夫
+農夫平躺放置於草原上，遊戲中不會拿回，只在最終計分時結算。農夫佔領所在草原鄰接的所有完成城堡，每座計 3 分。
+農夫也適用共同佔領規則：同一草原農夫最多者得分，並列者平分。
+計分板
+到達或超過 50/100 格時，翻轉計分片或拿取 50/100 計分片放到自己面前記錄超過的分數。
+🌊
+河流
+迷你擴充
+▾
+內容
+12 片背面顏色較深的河流版圖，包含水源版圖和湖泊版圖，用於取代起始版圖。
+遊戲準備
+找出水源版圖和湖泊版圖，將其餘 10 片河流版圖正面朝下洗勻後疊成一疊，水源置於牌疊頂端，湖泊置於底部。
+遊戲進行
+由放水源版圖的玩家開始，輪流抽取並擺放河流版圖。河流版圖都用完後，改用一般版圖。
+	•	擺放河流版圖時必須延長河流，不可回折。
+	•	不得連續擺放 2 片左轉或 2 片右轉的版圖。
+擺放河流版圖後，可選擇是否派遣手下，但不能放在河流上。
+🌸
+修道院長
+迷你擴充
+▾
+內容
+每位玩家各 1 名自己顏色的修道院長（體型比手下高大）。
+派遣修道院長
+擺放修道院或花園版圖時，可選擇派遣修道院長。修道院長只能放在修道院或花園上；花園上不可放一般手下。
+收回修道院長
+在自己的回合，可選擇取回修道院長（不派新手下），不需等建築完成。取回時依照正常計分方式計算分數。
+計分
+修道院長計分（同修道院）
+花園/修道院被 8 片包圍時
+9 分
+最終計分（本身＋周圍每片）
+各 1 分
+🏰
+教堂餐館（酒館與大教堂）＋首領
+約＋15 分鐘
+▾
+內容
+18 片新版圖（含 6 片湖濱餐館版圖、2 片主教堂版圖）；每位玩家各 1 名首領（體型比手下高大）。
+湖濱餐館計分
+道路完成時，若路上有湖濱餐館，每片版圖得 2 分（取代原本 1 分）。
+道路在遊戲結束時未完成，得 0 分（不論有無餐館）。
+主教堂計分
+城堡完成時，若城堡內有主教堂，每片版圖及盾牌徽章得 3 分（取代原本 2 分）。
+城堡在遊戲結束時未完成，得 0 分（不論有無主教堂）。
+首領
+首領的派遣方式與一般手下相同，但計分時視為 2 名手下。計分後首領拿回。
+若將首領放在草原上擔任農夫，首領等同兩名手下，在農夫計分時一同計算。
+🐷
+建築師與豬（商人與建築師）
+約＋15 分鐘
+▾
+內容
+24 片新版圖、20 片貨物（葡萄酒 ×9、麥子 ×6、布匹 ×5）、6 名建築師（各色）、6 隻小豬（各色）。
+建築師
+如何派遣
+只能派遣到剛擺放版圖的城堡或道路上，且該城堡或道路上必須已有你的至少一名手下。
+額外回合效果
+在往後的回合中，若你擺放版圖讓建築師所在的城堡擴大或道路延長，可立即進行一個額外回合：抽取並擺放第二片版圖，可以派遣手下並計分。
+	•	沒有第二個額外回合（即使第二片版圖再次延長也無法抽取第三片）。
+	•	只要道路尚未完成，每個回合都可以觸發額外回合。
+	•	一條道路可以有多名建築師。
+建築師收回時機
+當城堡或道路不再有你的其他手下時，將建築師拿回。計分時建築師不計入人數。
+建築師是特殊人物，並非一般手下。
+小豬
+如何派遣
+只能派遣到剛擺放版圖的草原上，且草原上必須已有你的至少一名農夫。
+效果
+計算農夫得分時，小豬所在草原改為每座完整城堡得 4 分（取代原本 3 分）。
+小豬不計入農夫人數，只提升得分比率。若你和對手共同佔領同一草原，你的小豬依然給你較多分數。
+貨物
+城堡有貨物時
+城堡完成時，若城堡中有至少 1 件貨物：①城堡依常規計分。②放置完成版圖的玩家拿取與城堡種類和數量相符的貨物。即使城堡中沒有你的手下，你也可以獲得貨物；商人只有完成版圖的玩家一人。
+遊戲結束時貨物計分
+擁有最多某項貨物（葡萄酒、麥子或布匹）的玩家得 10 分。並列者都得 10 分。
+✈
+飛行器
+約＋10 分鐘
+▾
+內容
+8 片飛行器版圖、1 顆特製骰子（1、2、3 各兩面）。
+觸發時機
+抽到飛行器版圖時，先依常規擺放。接著玩家可選擇： A）依基本遊戲規則派遣手下到該版圖的道路、城堡或草原。 B）使用飛行器，將手下飛往另一片版圖。
+飛行器降落規則
+選擇飛行方向（垂直、水平或斜角）後擲骰，骰子結果決定手下直線飛行的距離（1–3 片版圖）。
+	•	必須降落在未完成的地形上（城堡、道路或修道院）。
+	•	可以降落在已有其他玩家手下佔領的未完成建築上。
+	•	不能降落在草原上（即使沒有農夫也不行）。
+	•	不能降落在沒有版圖的地方。
+若指定版圖上沒有未完成的非草原地形，或該位置沒有版圖，則手下收回，本回合不能再派遣任何手下或特殊人物。
+若有多個適當落點，你決定落在哪個位置及什麼角色。
+📨
+聖旨
+約＋15 分鐘
+▾
+內容
+8 張聖旨（正反兩面）、6 名使者（與手下同色，為計分人物）。每位玩家在計分板上有一名使者和一名計分手下（兩人合稱「計分人物」）。
+計分時如何使用聖旨
+每次計分後，從計分板上選一名計分人物向前移動。若計分人物停在深色格子上，可選擇使用聖旨功能，或直接獲得 2 分。操作完成後，將該張聖旨面朝下放在聖旨疊底層。
+聖旨功能說明
+	•	聖旨1：將分數最低的城堡計分（與遊戲結束時相同），手下留原處。
+	•	聖旨2：將分數最低的道路計分，效同聖旨1但改為道路。
+	•	聖旨3：將分數最低的修道院計分，效同聖旨1但改為修道院。
+	•	聖旨4：獲得 1 個額外回合，立即再抽 1 片版圖，依常規擺放，可以派遣手下並計分。
+	•	聖旨5：每個盾牌徽章 2 分，檢查所有你有手下的城堡，每個盾牌徽章得 2 分。
+	•	聖旨6：每名騎士 2 分，遊戲版圖上每有一名騎士，便得 2 分，騎士仍留在城堡中。
+	•	聖旨7：每名農夫 2 分，遊戲版圖上每有一名農夫，便得 2 分，農夫無需拿回。
+	•	聖旨8：將 1 名計分人物並齊到另一人的位置，選一個至少有一名你的手下的建築，立即計分（只有你得分），計分後將這座建築中的 1 名手下拿回。
+每次計分只能移動一名計分人物。若聖旨得分讓計分人物再次停在深色格，可以繼續連鎖抽取，無次數上限。
+最終計分
+最終計分前，每位玩家將使者和手下分數相加，並前進對應步數，然後將使者放回遊戲盒中。最終計分時不再發放聖旨。
+教堂餐館搭配：聖旨1/2 含主教堂城堡或含餐館道路在最終計分時不帶來分數；聖旨6–7 首領也只算 1 名騎士/農夫。
+⛵
+擺渡人
+約＋15 分鐘
+▾
+內容
+8 片帶有湖泊的版圖（含 1 片起始版圖）、8 艘木製小船。
+派遣手下與放置渡船
+可以選擇派遣一名手下到道路上。之後必須從桌上拿取 1 艘渡船放在湖上，連接版圖的兩條道路——不論是否派遣了手下，放置渡船都是強制的。渡船連接的兩條道路視為同一條連通的道路，湖泊為未被渡船連接道路的終點。
+若決定將手下派遣到道路上，必須從版圖上的三條或四條道路中選擇一條。
+移動渡船（往後的回合）
+若放置的版圖延伸了至少一條有渡船連接的未完成道路，可以（也可以不移動）移動這艘渡船。移動後，必須讓版圖的兩條道路互相連接；若被延伸的道路上有多艘渡船，只能移動最接近新版圖的 1 艘。
+特殊狀況：若放置版圖造成多條道路被延伸，可移動每條道路上最接近新版圖的渡船，你決定移動順序。
+擴充搭配
+教堂餐館：渡船連接的道路上若沒有餐館，該片版圖值 1 分。 建築師與豬：建築師所在道路單純因渡船移動而延伸，不觸發額外回合。
+🥇
+金礦
+約＋10 分鐘
+▾
+內容
+8 片帶金礦符號的版圖、1 張金塊計分表、16 塊木製金塊。
+觸發時機
+抽到有金礦的版圖時，依常規擺放，接著在該版圖上以及與其相鄰（水平、垂直或對角）的版圖各擺放 1 塊金塊。金塊可放在已有金塊的版圖上。
+計分
+每當有建築完成，在該建築上的玩家（手下最多者）獲得該建築版圖所有的金塊。
+金塊計分表（最終計分前換算）
+1–3 塊
+每塊 1 分
+4–6 塊
+每塊 2 分
+7–9 塊
+每塊 3 分
+10 塊以上
+每塊 4 分
+農夫不能獲得金塊。遊戲結束後，將剩餘在版圖上的金塊放回遊戲盒中。
+多人共同佔領時分配金塊
+手下最多的玩家獨得所有金塊。若並列，從進行回合的玩家開始，依順時針方向輪流每人取一塊，直到所有金塊被瓜分完畢。
+🧙
+法師女巫
+約＋10 分鐘
+▾
+內容
+8 片魔法版圖、1 名法師（紫色）、1 名女巫（橘色）。兩名魔法人物為公用配件，不屬於任何玩家。
+擺放版圖＋移動魔法人物
+抽到魔法版圖時，先依常規擺放。接著在派遣手下之前，必須從法師和女巫兩名魔法人物中選擇一名擺放或移動。魔法人物必須被擺放在未完成的道路或城堡上，且兩名魔法人物不能出現在同一條道路或城堡中。
+移動魔法人物發生在計分之前。若你放下版圖讓某條道路或城堡完成，你可以趁計分前將法師移入以獲得加分，或將女巫移入以讓分數減半。
+若無法放置（沒有任何未完成城堡或道路），則將其中一名魔法人物移除放回備用。
+計分效果
+	•	法師：對於構成該建築的每片版圖，法師讓它的分數額外增加 1 分。
+	•	女巫：有女巫在的建築，其分數除以二（無條件進位）。
+計分完成後，將該建築上的魔法人物移除，放到一旁備用。
+最終計分
+最終計分時，法師和女巫依然會發揮作用（建築未完成也有效）。
+教堂餐館搭配：含主教堂城堡或含餐館道路遊戲結束時未完成，則值 0 分；若有法師，法師仍為建築每片版圖帶來額外 1 分（但盾牌徽章仍然價值 0 分）。
+🦹
+土匪
+約＋10 分鐘
+▾
+內容
+8 片土匪符號版圖、6 名土匪（各色）。每位玩家取自己顏色的土匪，放在自己面前。
+觸發時機
+抽到有土匪符號的版圖，先依常規擺放。接著，在派遣手下之前，可以選擇是否要將土匪放到計分板上，與至少一名其他玩家計分手下相同格的位置上。接著從左手邊的玩家開始，依順時針方向決定是否放置土匪。
+打劫分數
+當有玩家的計分手下因得分而向前移動，若你的土匪和這名計分手下站在同一格中，則獲得他得分的一半（無條件進位），之後，將你的土匪拿回前面。得分玩家並不會因土匪的存在而損失分數。
+其他土匪規則
+	•	其他玩家移動計分手下是為了記錄土匪打劫獲得的分數時，你的土匪不能因此再次打劫（土匪之間不互相打劫）。
+	•	土匪有得分機會時，他不能選擇放棄以等待之後更高的得分機會。
+	•	自己的土匪不能打劫自己的計分手下。
+最終計分
+最終計分時，若你的土匪還站在計分板上，你獲得 3 分，並將土匪收回前面。
+聖旨搭配：當你的計分手下因土匪獲得的分數抵達了深色計分格，你可以抽取一張聖旨。
+🌾
+麥田圈
+約＋10 分鐘
+▾
+內容
+6 片有麥田圈的版圖。注意：麥田圈是道路的終點，也是草原的邊界，不得將手下派遣到麥田圈上。
+觸發時機
+抽到麥田圈版圖時，依常規完成你的回合（①擺放版圖 → ②派遣手下 → ③計分），之後才執行麥田圈效應。
+麥田圈效應
+你必須從以下效應選擇一個，接著由你左邊的玩家開始，依順時針順序，每位玩家輪流執行此效應：
+	•	A 效應（可以）：可以派遣一名手下，到自己已在版圖上手下的身邊（同一位置上）。
+	•	B 效應（必須）：必須從遊戲版圖上將一名自己的手下收回面前。
+效應影響的手下類型
+	•	乾草叉麥田圈影響農夫（草原上的手下）。
+	•	鎚子麥田圈影響強盜（道路上的手下）。
+	•	盾牌麥田圈影響騎士（城堡裡的手下）。
+選擇 A 效應時，玩家只能派遣同類型手下到同類型手下身邊。如果一位玩家無法執行效應（沒有對應類型手下在場），則跳過他。主動玩家最後執行。
+🐉
+公主火龍（公主與火龍）
+約＋40 分鐘
+▾
+內容
+30 片新版圖（含火山符號、火龍符號、公主符號、任意門符號）、1 隻木製火龍、1 名木製仙女。
+火山版圖
+抽到火山版圖時，依常規擺放，不能派遣手下，但可以移動仙女。接著將火龍移至這座火山上，不觸發肆虐。輪到下一位玩家進行回合。
+在抽到火山版圖之前，火龍尚未出現。若抽到有火龍符號的版圖時火龍尚未出現，將該版圖面朝上放到一旁，重抽一張繼續遊戲。火山出現後，把放到一旁的火龍版圖全部重新洗回版圖疊中。
+火龍版圖（火龍肆虐）
+抽到火龍版圖時，依常規擺放，可以派遣手下。接著火龍要出來肆虐了！
+火龍肆虐流程
+從進行回合的玩家開始，依順時針順序，每個人輪流將火龍水平或垂直移動一步，共移動六步（非死路情況）。
+	•	在一次肆虐中，火龍絕對不會造訪同一片版圖兩次。
+	•	火龍絕對不會走到有仙女的版圖上。
+	•	火龍所行經或停留的版圖上，若有手下或其他特殊人物，火龍吃掉他們，歸還所屬玩家面前。
+火龍的餐點（會吃的東西）
+基本版手下、修道院長
+✓ 會吃
+首領、建築師、小豬
+✓ 會吃
+法師、女巫
+✓ 會吃
+仙女
+✗ 不吃
+山城和伯爵城堡中的手下
+✗ 不吃
+死路：當火龍還未走滿六步，但已經沒有任何符合規則的版圖可以前進，火龍肆虐立即結束。
+公主版圖
+抽到公主版圖時，依常規擺放。如果你將版圖連接到一座已有手下的城堡，可以訪回這座城堡中的一名騎士，將他歸還所屬玩家面前。
+若你訪回一名騎士，則不得派遣手下到剛擺放的版圖上；若你並未訪回任何騎士，則可以依常規派遣手下。
+任意門版圖
+擺放任意門版圖後，可以派遣手下到這片版圖或到任何一片版圖上，但須遵守所有其他玩家手下的規則，例如不能派遣到已被佔領的區域，也不能將手下派遣到已經完成的區域。
+仙女
+	•	移動仙女：移動仙女取代派遣手下的動作，兩者只能擇一。可將仙女放到你的任何一名手下旁邊，包含草原上的農夫。
+	•	每回合開始立即獲得 1 分：在你的正常回合開始時，如果仙女在你的手下旁邊，你立即獲得 1 分（建築師額外回合不計）。
+	•	火龍肆虐時不被攻擊：火龍不能走到有仙女的版圖上，該版圖上所有的手下都能免於難。
+	•	計分時獲得額外 3 分：當仙女在你的手下旁邊的區域計分時，不論這名手下是否得分，仙女都會為你帶來額外 3 分。計分完後，將手下拿回，但仙女留在原地。
+🌉
+橋樑山城（橋樑、山城與市集）
+約＋40 分鐘
+▾
+內容
+12 片新版圖（8 片含「市集」圖案）、12 片山城、12 座橋樑。2–4 人：每人各取 3 座橋樑和 3 片山城；5–6 人：每人各取 2 座橋樑和 2 片山城。
+橋樑
+如何擺放橋樑
+當你擺放一片版圖後，可以額外蓋一座橋樑。橋樑等同道路，從版圖的一側延伸到另一側。可以將橋樑蓋在剛才擺放的版圖上，或相鄰（上下左右）的版圖上，兩個橋墩必須站在草原上。
+橋樑兩端不需要接既有道路。若兩端都是草原，視為道路兩端已封住，擺放當下立即完成計分 1 分。
+	•	計分時，一座橋樑等於一片版圖上的道路，但它不是道路的開端或結束。
+	•	橋樑可以放在已有人佔領的修道院上。
+	•	不能將橋樑蓋在已有其他玩家手下或遊戲配件的版圖上。
+山城
+完成小城壁並改建為山城
+當你完成一個小城堡（由兩片版圖組成），佔領該城堡的玩家可以決定：如常規一般，獲得 4 分並將手下收回；或者，在該城堡放上一片山城，讓手下留在該處，稍晚再進行計分。沒有手下在城堡裡，就不能蓋山城。
+獲得山城的分數
+「山城周圍」包含山城的那 2 片版圖，以及其左側 2 片版圖和右側 2 片版圖，共 6 片版圖。
+當你的山城周圍有某一建築完成時，你的山城將獲得與該建築等量的分數，然後將在山城上的手下取回，但山城留在該處直到遊戲結束。
+	•	你的山城會獲得接下來最早在你山城周圍完成的建築的分數，你不能放棄等待。
+	•	若同一回合內有多個建築同時完成，你可以選擇其中一個作為山城的得分來源。
+	•	遊戲結束前若周圍 6 片版圖都沒有任何建築完成，山城得 0 分，手下也無法收回。
+最終計分時，在計算農夫的得分時，每座山城將帶來 4 分，一般的城堡則維持 3 分。
+市集
+抽到一片市集版圖時，先依正常的回合流程來進行：①擺放版圖 → ②派遣手下 → ③計分。
+市集競標流程
+當你完成正常回合後，需要舉辦市集競標。若覆蓋的版圖數量不足玩家人數，則略過此步驟。
+翻開與玩家人數等量的版圖，由你左邊的玩家開始，他選擇一片版圖，並出價（最低 0 分，不能喊負數）。所有玩家都過一次後，選擇這片版圖的玩家必須：
+	•	購買這片版圖，付出競標費用（自己扣分），或者
+	•	賣出這片版圖給出價最高的玩家，並向他收取競標費用（自己加分）。
+若只剩最後一片版圖，尚未購買版圖的玩家免費得到它，不需要競標。
+市集無連鎖反應：市集競標流程中出現另一片市集版圖時，不會啟動新市集，要等到每位玩家都完成了擺放版圖、派遣手下、計分後，新出現的市集版圖才會啟動市集競標功能。
+變體市集（無競標）：你抽到一片市集版圖，依照常規完成你的回合後，翻開與玩家人數等量的版圖，由你左邊的玩家開始，輪流選擇一片版圖，然後用這片版圖進行一個正常的回合。
+🔍
+🔍
+
+✕
+
+
+🌱
+新手入門
+🔄
+回合流程
+⚖
+裁判手冊
+
+📜
+基本規則
+🌊
+河流
+🌸
+修道院長
+🏰
+教堂餐館
+🐷
+建築師豬
+✈
+飛行器
+📨
+聖旨
+⛵
+擺渡人
+🥇
+金礦
+🧙
+法師女巫
+🦹
+土匪
+🌾
+麥田圈
+🐉
+公主火龍
+🌉
+橋樑山城
