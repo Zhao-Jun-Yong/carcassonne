@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Carcassonne Rules Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Noto+Serif+TC:wght@400;500;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0d0b12; --bg2:#13101a; --surface:#1a1525; --border:#2e2540;
+  --gold:#c9a84c; --gold-dim:#7a6030; --text:#e8e0d0; --text-dim:#9a9080;
+  --dark:#0d0b12; --nav-h:56px;
+  --c-beginner:#1a5c38; --c-flow:#1a3870; --c-faq:#6b3a10;
+  --c-base:#6b1818; --c-river:#0d4060; --c-abbot:#3a1868;
+  --c-inn:#6b1830; --c-builder:#5c3408; --c-flier:#0a5048;
+  --c-edict:#44086b; --c-ferry:#0a3060; --c-goldm:#5c4808;
+  --c-mage:#26086b; --c-robber:#5c0808; --c-crop:#185808;
+  --c-dragon:#6b2208; --c-bridge:#282838;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background-color:var(--bg);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  font-family:'IM Fell English',serif;
+  color:var(--text);min-height:100vh;
+  padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom,0px));
+  overflow-x:hidden;
+}
+.title-band{background:linear-gradient(180deg,#1c1428 0%,var(--bg) 100%);border-bottom:1px solid var(--gold-dim);padding:1.1rem 1rem .7rem;text-align:center;position:relative;}
+.title-band::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);}
+.title-text{font-family:'Cinzel Decorative',serif;font-size:1.15rem;letter-spacing:.08em;background:linear-gradient(135deg,#e8c86a 0%,var(--gold) 50%,#a07820 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.3;}
+.title-sub{font-family:'IM Fell English',serif;font-size:.72rem;color:var(--text-dim);letter-spacing:.15em;margin-top:.25rem;font-style:italic;}
+.lang-switch{display:flex;justify-content:center;gap:.6rem;padding:.5rem;background:var(--bg2);border-bottom:1px solid var(--border);}
+.lang-btn{font-family:'IM Fell English',serif;font-size:.75rem;padding:.25rem .7rem;border-radius:10px;border:1px solid var(--gold-dim);color:var(--text-dim);text-decoration:none;transition:background .15s;}
+.lang-btn.active{background:rgba(201,168,76,.15);color:var(--gold);border-color:var(--gold);}
+.qref{margin:.8rem .9rem;background:var(--surface);border:1px solid var(--gold-dim);border-radius:10px;overflow:hidden;box-shadow:0 0 20px rgba(201,168,76,.08);}
+.qref-title{background:linear-gradient(90deg,#3a2a0a,#2a1e06);border-bottom:1px solid var(--gold-dim);padding:.45rem .8rem;font-family:'IM Fell English',serif;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);}
+.qref-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.qref-cell{background:var(--bg2);padding:.45rem .7rem;display:flex;justify-content:space-between;align-items:center;gap:.4rem;}
+.qref-label{font-size:.77rem;color:var(--text-dim);line-height:1.3;}
+.qref-val{font-size:.88rem;font-weight:700;color:var(--gold);white-space:nowrap;}
+.qref-note{grid-column:1/-1;background:var(--bg2);padding:.35rem .7rem;font-size:.72rem;color:var(--text-dim);border-top:1px solid var(--border);font-style:italic;}
+main{max-width:740px;margin:0 auto;padding:0 .7rem .5rem;}
+.section{margin-bottom:.65rem;border-radius:10px;overflow:hidden;border:1px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,.4);transition:box-shadow .2s;}
+.section:hover{box-shadow:0 4px 20px rgba(0,0,0,.55);}
+.sec-hdr{display:flex;align-items:center;gap:.55rem;padding:.7rem .9rem;cursor:pointer;user-select:none;position:relative;overflow:hidden;}
+.sec-hdr::before{content:'';position:absolute;inset:0;opacity:.18;background:var(--jewel);}
+.sec-hdr::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--jewel);box-shadow:0 0 8px var(--jewel);}
+.sec-icon{font-size:1rem;flex-shrink:0;position:relative;z-index:1;}
+.sec-title{flex:1;font-size:.9rem;font-weight:700;color:var(--text);letter-spacing:.02em;position:relative;z-index:1;line-height:1.3;}
+.sec-tag{font-size:.63rem;font-family:'IM Fell English',serif;font-style:italic;color:var(--gold);background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);border-radius:10px;padding:.1rem .45rem;white-space:nowrap;position:relative;z-index:1;}
+.sec-chev{color:var(--gold);font-size:.75rem;transition:transform .25s;position:relative;z-index:1;flex-shrink:0;}
+.section.closed .sec-chev{transform:rotate(-90deg);}
+.sec-body{background:var(--bg2);padding:.9rem .95rem 1rem;border-top:1px solid var(--border);}
+.section.closed .sec-body{display:none;}
+.rb{margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.rb:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.rl{font-family:'IM Fell English',serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem;padding-left:.6rem;border-left:2px solid var(--gold-dim);}
+.rb h3{font-size:.83rem;font-weight:700;color:var(--text);margin:.5rem 0 .25rem;opacity:.9;}
+.rb h3:first-child{margin-top:0;}
+p{font-size:.84rem;line-height:1.7;color:var(--text);margin-bottom:.45rem;}
+p:last-child{margin-bottom:0;}
+p strong,li strong{color:#e8d090;}
+ul{padding-left:1.1rem;margin-bottom:.45rem;}
+li{font-size:.83rem;line-height:1.65;color:var(--text);margin-bottom:.2rem;}
+li::marker{color:var(--gold-dim);}
+.sb{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:.55rem 0;}
+.sb-t{background:rgba(201,168,76,.1);border-bottom:1px solid var(--border);padding:.35rem .7rem;font-size:.68rem;font-family:'IM Fell English',serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);}
+.sr{display:flex;justify-content:space-between;align-items:center;padding:.35rem .7rem;border-bottom:1px solid rgba(255,255,255,.04);font-size:.82rem;gap:.5rem;}
+.sr:last-child{border-bottom:none;}
+.sr span:first-child{color:var(--text-dim);}
+.sv{font-weight:700;color:#e8b050;white-space:nowrap;}
+.note{background:rgba(201,168,76,.07);border-left:2px solid var(--gold-dim);border-radius:0 6px 6px 0;padding:.5rem .75rem;font-size:.8rem;color:var(--text-dim);line-height:1.6;margin:.5rem 0;}
+.fq{font-size:.84rem;font-weight:700;color:#d0c8b0;margin:.6rem 0 .2rem;padding-left:.5rem;border-left:2px solid #6b4a20;}
+.fq:first-child{margin-top:0;}
+.fa{font-size:.83rem;line-height:1.68;color:var(--text);padding-left:.5rem;margin-bottom:.1rem;}
+.fa strong{color:#e8c870;}
+.tf-lbl{font-family:'IM Fell English',serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;padding-left:.6rem;border-left:2px solid var(--gold-dim);}
+#expToggles{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:1rem;}
+.etog{border-radius:14px;padding:.2rem .6rem;font-size:.72rem;font-weight:700;cursor:pointer;border:1.5px solid transparent;transition:opacity .15s,transform .12s,background .15s;user-select:none;opacity:.4;background:transparent;}
+.etog.on{opacity:1;transform:scale(1.05);}
+.fp{margin-bottom:.6rem;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.fph{display:flex;align-items:center;gap:.5rem;padding:.5rem .8rem;background:var(--surface);border-bottom:1px solid var(--border);}
+.pnum{background:var(--gold);color:var(--dark);width:1.3rem;height:1.3rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;}
+.ptitle{font-size:.84rem;font-weight:700;color:var(--text);}
+.fsteps{background:var(--bg2);}
+.fstep{display:flex;align-items:flex-start;gap:.5rem;padding:.42rem .8rem;border-bottom:1px solid rgba(255,255,255,.04);font-size:.81rem;line-height:1.58;color:var(--text);animation:si .18s ease;}
+.fstep:last-child{border-bottom:none;}
+@keyframes si{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.fdot{width:.5rem;height:.5rem;border-radius:50%;margin-top:.42rem;flex-shrink:0;}
+.ftxt{flex:1;}
+.fbadge{display:inline-block;border-radius:3px;padding:.03rem .3rem;font-size:.63rem;font-weight:700;color:#fff;margin-right:.3rem;vertical-align:middle;}
+.fcond{display:block;font-size:.72rem;color:var(--text-dim);font-style:italic;margin-top:.08rem;}
+#sfab{position:fixed;bottom:calc(var(--nav-h) + 14px + env(safe-area-inset-bottom,0px));right:14px;width:48px;height:48px;border-radius:50%;background:var(--gold);color:var(--dark);border:none;font-size:1.2rem;cursor:pointer;z-index:200;box-shadow:0 4px 16px rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;transition:transform .15s;}
+#sfab:active{transform:scale(.93);}
+#sov{position:fixed;inset:0;background:rgba(13,11,18,.97);z-index:300;display:flex;flex-direction:column;padding:1rem 1rem .5rem;gap:.7rem;transform:translateY(100%);transition:transform .25s cubic-bezier(.25,.46,.45,.94);}
+#sov.open{transform:translateY(0);}
+.sbar{display:flex;align-items:center;gap:.6rem;background:var(--surface);border:1px solid var(--gold-dim);border-radius:10px;padding:.6rem .9rem;}
+#sinp{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'IM Fell English',serif;font-size:.95rem;}
+#sinp::placeholder{color:var(--text-dim);}
+.sico{color:var(--gold);font-size:1rem;}
+#scls{background:none;border:none;color:var(--text-dim);font-size:1.1rem;cursor:pointer;padding:0 .2rem;}
+#scnt{font-size:.75rem;color:var(--text-dim);padding-left:.2rem;}
+#sres{flex:1;overflow-y:auto;}
+.shit{display:block;padding:.7rem .5rem;border-bottom:1px solid var(--border);cursor:pointer;color:var(--text);font-size:.83rem;line-height:1.55;text-decoration:none;}
+.shit:active{background:var(--surface);}
+.hsec{font-size:.68rem;color:var(--gold);margin-bottom:.15rem;}
+mark.hl{background:rgba(201,168,76,.35);color:var(--text);border-radius:2px;padding:0 1px;}
+#bnav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:#0f0c17;border-top:1px solid var(--border);display:flex;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;z-index:100;padding-bottom:env(safe-area-inset-bottom,0px);-webkit-overflow-scrolling:touch;}
+#bnav::-webkit-scrollbar{display:none;}
+.ni{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.18rem;padding:0 .7rem;min-width:56px;cursor:pointer;flex-shrink:0;text-decoration:none;border-bottom:2px solid transparent;transition:background .15s;}
+.ni:active{background:rgba(255,255,255,.05);}
+.ni.active{border-bottom-color:var(--gold);}
+.nic{font-size:.95rem;line-height:1;}
+.nil{font-size:.58rem;color:var(--text-dim);white-space:nowrap;}
+.ni.active .nil{color:var(--gold);}
+.nd{width:1px;background:var(--border);margin:.5rem 0;flex-shrink:0;}
+.sec-hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<div class="title-band">
+  <div class="title-text">⚔ Carcassonne</div>
+  <div class="title-sub">Big Box · Rules Reference</div>
+</div>
+<div class="lang-switch">
+  <a class="lang-btn" href="index.html">繁體中文</a>
+  <a class="lang-btn active" href="en.html">English</a>
+</div>
+
+<div class="qref">
+  <div class="qref-title">⚡ Scoring Quick Reference</div>
+  <div class="qref-grid">
+    <div class="qref-cell"><span class="qref-label">Road (per tile)</span><span class="qref-val">1 pt</span></div>
+    <div class="qref-cell"><span class="qref-label">City (per tile)</span><span class="qref-val">2 pts</span></div>
+    <div class="qref-cell"><span class="qref-label">Shield (completed)</span><span class="qref-val">+2 pts</span></div>
+    <div class="qref-cell"><span class="qref-label">Monastery (fully surrounded)</span><span class="qref-val">9 pts</span></div>
+    <div class="qref-cell"><span class="qref-label">Farmer (per completed city)</span><span class="qref-val">3 pts</span></div>
+    <div class="qref-cell"><span class="qref-label">Road w/ Inn (per tile)</span><span class="qref-val">2 pts</span></div>
+    <div class="qref-cell"><span class="qref-label">City w/ Cathedral (per tile)</span><span class="qref-val">3 pts</span></div>
+    <div class="qref-cell"><span class="qref-label">Farmer next to Bazaar (per city)</span><span class="qref-val">4 pts</span></div>
+    <div class="qref-note">Incomplete at game end: road 1pt/tile, city 1pt/tile, shield +1pt, monastery = itself + surroundings ｜ Inn/Cathedral incomplete → 0 pts</div>
+  </div>
+</div>
+
+<main>
+
+<!-- Beginner -->
+<div class="section" id="beginner" data-sec="Beginner's Guide" style="--jewel:var(--c-beginner)">
+  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🌱</span><span class="sec-title">Beginner's Guide</span><span class="sec-tag">First time? Start here</span><span class="sec-chev">▾</span></div>
+  <div class="sec-body">
+    <div class="rb">
+      <div class="rl">Each Turn in Three Steps</div>
+      <ul>
+        <li><strong>① Draw &amp; Place</strong>: Draw a tile and place it next to existing tiles. All touching edges must match terrain.</li>
+        <li><strong>② Deploy (optional)</strong>: Place one of your meeples on a feature of the tile you just placed, provided that feature is not already occupied.</li>
+        <li><strong>③ Score</strong>: If a feature was completed by your placement, score it immediately and return your meeple.</li>
+      </ul>
+    </div>
+    <div class="rb">
+      <div class="rl">Common Beginner Mistakes</div>
+      <ul>
+        <li><strong>Running out of meeples?</strong> Normal. Meeples are limited — the strategy is timing your placements to get them back.</li>
+        <li><strong>Farmers never come back?</strong> Correct. Farmers (laid flat) stay on the board all game and only score at the end.</li>
+        <li><strong>How do shields score?</strong> When a city completes: +2 pts each. At end of game (incomplete): +1 pt each.</li>
+        <li><strong>Can I take over someone's feature?</strong> No. But if tiles connect two features, they merge — whoever has more meeples wins; ties share the full score.</li>
+        <li><strong>When does a monastery complete?</strong> When all 8 surrounding spaces are filled — 9 pts total.</li>
+      </ul>
+    </div>
+    <div class="rb">
+      <div class="rl">Meeple Role Names</div>
+      <ul>
+        <li>On a <strong>road</strong> → Thief</li>
+        <li>In a <strong>city</strong> → Knight</li>
+        <li>On a <strong>monastery</strong> → Monk</li>
+        <li><strong>Lying flat</strong> on a field → Farmer</li>
+      </ul>
+      <p>These role names appear in expansion rules such as Crop Circles and the Dragon's menu.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Turn Flow -->
+<div class="section" id="turnflow" data-sec="Interactive Turn Flow" style="--jewel:var(--c-flow)">
+  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🔄</span><span class="sec-title">Interactive Turn Flow</span><span class="sec-tag">Select your expansions</span><span class="sec-chev">▾</span></div>
+  <div class="sec-body">
+    <div class="tf-lbl">Active Expansions</div>
+    <div id="expToggles"></div>
+    <div id="flowDisplay"></div>
+  </div>
+</div>
+
+<!-- Referee's Handbook -->
+<div class="section" id="faq" data-sec="Referee's Handbook" style="--jewel:var(--c-faq)">
+  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">⚖</span><span class="sec-title">Referee's Handbook: Disputes &amp; Cross-Expansion Rules</span><span class="sec-tag">Settle arguments here</span><span class="sec-chev">▾</span></div>
+  <div class="sec-body">
+    <div class="rb">
+      <div class="rl">Gold Mines</div>
+      <div class="fq">Q: If a gold mine tile completes a feature on the same turn, can gold be claimed immediately?</div>
+      <div class="fa"><strong>Yes.</strong> Correct order: ① Place tile → ② Place gold → ③ Score and distribute gold. Gold is placed before scoring, so it can be claimed that same turn.</div>
+      <div class="fq">Q: Can farmers claim gold nuggets?</div>
+      <div class="fa"><strong>No.</strong> Farmers cannot receive gold at any point — during the game or at final scoring.</div>
+    </div>
+    <div class="rb">
+      <div class="rl">Inns &amp; Cathedrals</div>
+      <div class="fq">Q: Can I place a cathedral in someone else's city?</div>
+      <div class="fa"><strong>Yes.</strong> It's legal sabotage — if they fail to complete that city, they score 0. Inns can similarly be placed on opponents' roads.</div>
+      <div class="fq">Q: If a road or city with an inn/cathedral is incomplete at game end, do they still score?</div>
+      <div class="fa"><strong>No — 0 pts.</strong> Worse than a normal incomplete feature, which at least scores 1 pt per tile.</div>
+      <div class="fq">Q: Does the Big Meeple count as two meeples for majority?</div>
+      <div class="fa"><strong>Yes — counts as 2 meeples</strong> when determining majority.</div>
+    </div>
+    <div class="rb">
+      <div class="rl">Traders &amp; Builders</div>
+      <div class="fq">Q: Does the Dragon eat the Builder and the Pig?</div>
+      <div class="fa"><strong>Yes.</strong> Both appear on the Dragon's menu in the Big Box rulebook. They are returned to their owner when eaten.</div>
+      <div class="fq">Q: If the Builder is eaten, can the extra turn still be taken?</div>
+      <div class="fa"><strong>No.</strong> The Builder is not on the board, so the extra turn condition is not met.</div>
+      <div class="fq">Q: If the Pig is eaten, how do farmers score?</div>
+      <div class="fa"><strong>Back to 3 pts per city.</strong> The Pig's bonus is lost.</div>
+      <div class="fq">Q: If a Crop Circle tile is drawn during an extra turn, when does the Crop Circle effect trigger?</div>
+      <div class="fa">Complete the entire extra turn first (place tile, deploy meeple, score), then execute the Crop Circle effect.</div>
+    </div>
+    <div class="rb">
+      <div class="rl">The Princess &amp; The Dragon</div>
+      <div class="fq">Q: Does the Fairy's 1-pt bonus apply at the start of a Builder extra turn?</div>
+      <div class="fa"><strong>No.</strong> The Fairy's 1 pt only triggers at the start of a normal turn.</div>
+      <div class="fq">Q: Can the Fairy protect meeples from the Princess tile?</div>
+      <div class="fa"><strong>No.</strong> The Fairy only protects against the Dragon. Knights displaced by the Princess cannot receive the Fairy's 3-pt bonus either.</div>
+      <div class="fq">Q: Can the Magic Gate deploy a meeple to an already-occupied feature?</div>
+      <div class="fa"><strong>No.</strong> The Magic Gate follows normal deployment rules — cannot target occupied or completed features.</div>
+      <div class="fq">Q: Can the Dragon eat farmers in fields?</div>
+      <div class="fa"><strong>Yes.</strong> The Dragon eats all meeples and special figures on any tile it passes through, including farmers.</div>
+      <div class="fq">Q: If the Dragon enters a tile whose feature was already scored but meeples remain, are they eaten?</div>
+      <div class="fa"><strong>Yes.</strong> The Dragon does not distinguish completed from incomplete features.</div>
+    </div>
+    <div class="rb">
+      <div class="rl">Mage &amp; Witch × Princess &amp; Dragon</div>
+      <div class="fq">Q: Does the Dragon eat the Mage or the Witch?</div>
+      <div class="fa"><strong>Yes.</strong> Both are on the Dragon's menu per the official FAQ. They are returned to the supply when eaten.</div>
+      <div class="fq">Q: After placing a magic tile, the Mage and Witch end up on the same feature — what happens?</div>
+      <div class="fa">The player who placed the tile must immediately move one of them, before scoring.</div>
+      <div class="fq">Q: If there are no meeples on the feature when it scores, do the Mage/Witch effects still apply?</div>
+      <div class="fa"><strong>Yes.</strong> The Mage still adds 1 pt per tile; the Witch still halves the total (round up). The Mage and Witch cannot be on the same feature simultaneously.</div>
+    </div>
+    <div class="rb">
+      <div class="rl">Crop Circles</div>
+      <div class="fq">Q: Effect B forces a recall — what if a player has no matching meeple type on the board?</div>
+      <div class="fa"><strong>They are skipped.</strong></div>
+      <div class="fq">Q: Can a player choose not to deploy under Effect A?</div>
+      <div class="fa"><strong>Yes.</strong> Effect A says "may" — it is optional.</div>
+      <div class="fq">Q: Under Effect A, can a meeple be placed on a feature already occupied by an opponent?</div>
+      <div class="fa"><strong>Yes, but only next to your own meeple already there.</strong> This follows normal shared-ownership rules.</div>
+    </div>
+    <div class="rb">
+      <div class="rl">Ferries</div>
+      <div class="fq">Q: If a Builder's road is extended solely because a ferry moved, does that trigger an extra turn?</div>
+      <div class="fa"><strong>No.</strong> Extra turns only trigger when a player actually places a new tile.</div>
+      <div class="fq">Q: If a ferry move closes both ends of a road, does it score immediately?</div>
+      <div class="fa"><strong>Yes — score immediately.</strong> Any event that closes both ends of a road triggers immediate scoring.</div>
+    </div>
+    <div class="rb">
+      <div class="rl">Robbers</div>
+      <div class="fq">Q: If a Robber moves due to theft and lands on another scoring marker, does it steal again?</div>
+      <div class="fa"><strong>No.</strong> No chain robberies — the Robber stops after one theft per trigger.</div>
+      <div class="fq">Q: If multiple Robbers are on the same space, do they all steal?</div>
+      <div class="fa"><strong>Yes — each triggers independently.</strong> Each Robber's owner receives half the victim's score (rounded up).</div>
+      <div class="fq">Q: Can a Robber steal points triggered by a Messenger card?</div>
+      <div class="fa"><strong>Yes.</strong> Any scoring action that moves a scoring marker can be stolen from.</div>
+    </div>
+    <div class="rb">
+      <div class="rl">Bridges, Castles &amp; Bazaars</div>
+      <div class="fq">Q: How much does a Castle score for a farmer?</div>
+      <div class="fa"><strong>4 pts</strong> per Castle (vs. 3 pts for a normal completed city).</div>
+      <div class="fq">Q: Can the Dragon enter a tile occupied by a Castle?</div>
+      <div class="fa"><strong>No.</strong> Meeples in Castles are protected, equivalent to the Count's city.</div>
+      <div class="fq">Q: Can bazaar bidding push a score below 0?</div>
+      <div class="fa"><strong>Yes.</strong> Negative scores are possible and valid.</div>
+    </div>
+    <div class="rb">
+      <div class="rl">Flying Machines</div>
+      <div class="fq">Q: Can a meeple land on an incomplete feature already occupied by an opponent?</div>
+      <div class="fa"><strong>Yes.</strong> The Flying Machine can land on any incomplete road, city, or monastery regardless of existing occupants. Fields and completed features are prohibited.</div>
+      <div class="fq">Q: What if the dice result points to a space with no tile?</div>
+      <div class="fa"><strong>The meeple is returned.</strong> No meeple or special figure may be deployed that turn.</div>
+    </div>
+    <div class="rb">
+      <div class="rl">Messengers</div>
+      <div class="fq">Q: If multiple features are scored in one turn, can different scoring figures be moved for each?</div>
+      <div class="fa"><strong>Yes.</strong> Each separate scoring event can use a different figure, but each individual scoring event must be moved by a single figure.</div>
+      <div class="fq">Q: Can Messenger cards chain indefinitely?</div>
+      <div class="fa"><strong>Yes — unlimited chains.</strong> Each time a scoring figure lands on a dark space, another card may be drawn.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Base Game -->
+<div class="section" id="base" data-sec="Base Game" style="--jewel:var(--c-base)">
+  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">📜</span><span class="sec-title">Base Game</span><span class="sec-tag">Core rules</span><span class="sec-chev">▾</span></div>
+  <div class="sec-body">
+    <div class="rb"><div class="rl">Overview</div><p>2–6 players, 72 land tiles, 7 meeples each. One starting tile placed face-up to begin.</p></div>
+    <div class="rb"><div class="rl">Three Steps Per Turn</div>
+      <h3>① Place a Tile</h3><p>Draw 1 tile and place it adjacent to existing tiles. All touching edges must match. In the rare case it cannot be placed, discard it and draw again.</p>
+      <h3>② Deploy a Meeple (optional)</h3><p>Place 1 meeple on a feature of the tile you just placed. You may not deploy to a feature already occupied by any meeple (including your own).</p>
+      <h3>③ Score</h3><p>If the tile you placed completed any feature, score it immediately and return the meeple(s).</p>
+    </div>
+    <div class="rb"><div class="rl">Scoring</div>
+      <div class="sb"><div class="sb-t">During the Game (feature completed)</div>
+        <div class="sr"><span>Road (per tile)</span><span class="sv">1 pt</span></div>
+        <div class="sr"><span>City (per tile)</span><span class="sv">2 pts</span></div>
+        <div class="sr"><span>Shield in city (each)</span><span class="sv">+2 pts</span></div>
+        <div class="sr"><span>Monastery (all 8 surrounding filled)</span><span class="sv">9 pts</span></div>
+      </div>
+      <div class="sb"><div class="sb-t">End of Game (incomplete features)</div>
+        <div class="sr"><span>Incomplete road (per tile)</span><span class="sv">1 pt</span></div>
+        <div class="sr"><span>Incomplete city (per tile)</span><span class="sv">1 pt</span></div>
+        <div class="sr"><span>Shield in incomplete city (each)</span><span class="sv">+1 pt</span></div>
+        <div class="sr"><span>Incomplete monastery (itself + each surrounding tile)</span><span class="sv">1 pt each</span></div>
+        <div class="sr"><span>Farmer (per adjacent completed city)</span><span class="sv">3 pts</span></div>
+      </div>
+    </div>
+    <div class="rb"><div class="rl">Shared Ownership</div><p>If a feature is shared, the player with the most meeples scores all points. Ties: everyone with the most scores in full.</p></div>
+    <div class="rb"><div class="rl">Farmers</div><p>Farmers lie flat on fields and <strong>never return</strong> during the game. They score only at game end: 3 pts per completed city adjacent to their field.</p><div class="note">Shared field rules apply: the player(s) with the most farmers in a field score all points from that field.</div></div>
+    <div class="rb"><div class="rl">Scoreboard</div><p>When reaching or passing 50/100, flip your scoring token or take a 50/100 point tile to track your total.</p></div>
+  </div>
+</div>
+
+<!-- River -->
+<div class="section" id="river" data-sec="The River" style="--jewel:var(--c-river)">
+  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🌊</span><span class="sec-title">The River</span><span class="sec-tag">Mini expansion</span><span class="sec-chev">▾</span></div>
+  <div class="sec-body">
+    <div class="rb"><div class="rl">Contents</div><p>12 river tiles (darker backs), including the Spring and Lake tiles. These replace the starting tile.</p></div>
+    <div class="rb"><div class="rl">Setup</div><p>Find the Spring and Lake tiles. Shuffle the remaining 10 river tiles face-down into a stack, place the Spring on top and the Lake at the bottom.</p></div>
+    <div class="rb"><div class="rl">Play</div>
+      <p>The player who places the Spring goes first. Players take turns drawing and placing river tiles. When the river stack is exhausted, switch to normal tiles.</p>
+      <ul><li>River tiles must extend the river and may not fold back on themselves.</li><li>Two consecutive left-turn or right-turn tiles are not allowed.</li></ul>
+      <div class="note">You may deploy a meeple after placing a river tile, but not on the river itself.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Abbot -->
+<div class="section" id="abbot" data-sec="The Abbot" style="--jewel:var(--c-abbot)">
+  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🌸</span><span class="sec-title">The Abbot</span><span class="sec-tag">Mini expansion</span><span class="sec-chev">▾</span></div>
+  <div class="sec-body">
+    <div class="rb"><div class="rl">Contents</div><p>1 Abbot figure per player (larger than a meeple).</p></div>
+    <div class="rb"><div class="rl">Deploying the Abbot</div><p>When placing a monastery or garden tile, you may deploy your Abbot. The Abbot can only go on monasteries or gardens; regular meeples cannot be placed on gardens.</p></div>
+    <div class="rb"><div class="rl">Recalling the Abbot</div><p>On your turn, instead of deploying a new meeple, you may recall your Abbot and score it immediately — no need to wait for the feature to complete.</p></div>
+    <div class="rb"><div class="rl">Scoring</div>
+      <div class="sb"><div class="sb-t">Abbot Scoring (same as Monastery)</div>
+        <div class="sr"><span>Fully surrounded by 8 tiles</span><span class="sv">9 pts</span></div>
+        <div class="sr"><span>End of game (itself + each surrounding tile)</span><span class="sv">1 pt each</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Inns & Cathedrals -->
+<div class="section" id="exp1" data-sec="Inns &amp; Cathedrals" style="--jewel:var(--c-inn)">
+  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🏰</span><span class="sec-title">Inns &amp; Cathedrals + Big Meeple</span><span class="sec-tag">+~15 min</span><span class="sec-chev">▾</span></div>
+  <div class="sec-body">
+    <div class="rb"><div class="rl">Contents</div><p>18 new tiles (6 Inn-by-the-Lake tiles, 2 Cathedral tiles); 1 Big Meeple per player.</p></div>
+    <div class="rb"><div class="rl">Inn by the Lake</div><p>When a road with an Inn completes, score <strong>2 pts per tile</strong> (instead of 1).</p><div class="note">If the road is incomplete at game end, it scores 0 pts regardless of the Inn.</div></div>
+    <div class="rb"><div class="rl">Cathedral</div><p>When a city with a Cathedral completes, score <strong>3 pts per tile and per shield</strong> (instead of 2).</p><div class="note">If the city is incomplete at game end, it scores 0 pts regardless of the Cathedral.</div></div>
+    <div class="rb"><div class="rl">Big Meeple</div><p>Deployed like a normal meeple but counts as <strong>2 meeples</strong> for majority. Returns after scoring.</p><div class="note">If used as a farmer, the Big Meeple counts as two farmers when calculating field majorities.</div></div>
+  </div>
+</div>
+
+<!-- Traders & Builders -->
+<div class="section" id="exp2" data-sec="Traders &amp; Builders" style="--jewel:var(--c-builder)">
+  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🐷</span><span class="sec-title">Traders &amp; Builders</span><span class="sec-tag">+~15 min</span><span class="sec-chev">▾</span></div>
+  <div class="sec-body">
+    <div class="rb"><div class="rl">Contents</div><p>24 new tiles, 20 trade goods tokens (Wine ×9, Grain ×6, Cloth ×5), 6 Builders, 6 Pigs.</p></div>
+    <div class="rb"><div class="rl">Builder</div>
+      <h3>How to Deploy</h3><p>May only be placed on a city or road of the tile you just placed, where you already have at least one meeple.</p>
+      <h3>Extra Turn Effect</h3><p>In future turns, if you place a tile that expands the city or extends the road where your Builder sits, you immediately take an extra turn: draw and place a second tile, optionally deploy a meeple, and score.</p>
+      <ul><li>No second extra turn (even if the second tile also extends the feature).</li><li>Can trigger every turn as long as the feature is incomplete.</li><li>One road/city can hold multiple Builders.</li></ul>
+      <h3>Recalling the Builder</h3><p>Return the Builder when the feature no longer has any of your other meeples. The Builder does not count toward majority.</p>
+      <div class="note">The Builder is a special figure, not a regular meeple.</div>
+    </div>
+    <div class="rb"><div class="rl">Pig</div>
+      <h3>How to Deploy</h3><p>May only be placed on a field of the tile you just placed, where you already have at least one farmer.</p>
+      <h3>Effect</h3><p>Farmers in that field score <strong>4 pts per completed city</strong> (instead of 3).</p>
+      <div class="note">The Pig does not count toward farmer majority — it only boosts your scoring rate. If you share a field with an opponent, your Pig still gives you more points.</div>
+    </div>
+    <div class="rb"><div class="rl">Trade Goods</div>
+      <h3>Claiming Goods</h3><p>When a city with trade goods completes: ① Score normally. ② The player who placed the completing tile takes all goods matching that city's type, even without a meeple there. Only one player claims goods per completion.</p>
+      <h3>End-Game Scoring</h3><p>Most tokens of each type (Wine, Grain, Cloth) → <strong>10 pts</strong>. Ties each receive 10 pts.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Flying Machines -->
+<div class="section" id="biplane" data-sec="Flying Machines" style="--jewel:var(--c-flier)">
+  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">✈</span><span class="sec-title">Flying Machines</span><span class="sec-tag">+~10 min</span><span class="sec-chev">▾</span></div>
+  <div class="sec-body">
+    <div class="rb"><div class="rl">Contents</div><p>8 Flying Machine tiles, 1 custom die (faces: 1, 1, 2, 2, 3, 3).</p></div>
+    <div class="rb"><div class="rl">When Triggered</div><p>When you draw a Flying Machine tile, place it normally. Then choose:<br><strong>A)</strong> Deploy a meeple normally to a road, city, or field on that tile.<br><strong>B)</strong> Use the Flying Machine to send a meeple to another tile.</p></div>
+    <div class="rb"><div class="rl">Landing Rules</div>
+      <p>Choose a direction (horizontal, vertical, or diagonal), then roll the die to determine distance (1–3 tiles in a straight line).</p>
+      <ul>
+        <li>Must land on an <strong>incomplete</strong> feature (city, road, or monastery).</li>
+        <li><strong>May</strong> land on a feature already occupied by another player's meeple.</li>
+        <li>Cannot land on fields (even unoccupied ones).</li>
+        <li>Cannot land on an empty space (no tile).</li>
+      </ul>
+      <p>If the target tile has no valid incomplete non-field feature, or there is no tile there, the meeple is returned and no meeple or special figure may be deployed this turn.</p>
+      <div class="note">If multiple valid landing spots exist, you choose where and which role.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Messengers -->
+<div class="section" id="edict" data-sec="Messengers" style="--jewel:var(--c-edict)">
+  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">📨</span><span class="sec-title">Messengers</span><span class="sec-tag">+~15 min</span><span class="sec-chev">▾</span></div>
+  <div class="sec-body">
+    <div class="rb"><div class="rl">Contents</div><p>8 Messenger cards (double-sided), 6 Envoy figures (matching player colors, used as scoring figures). Each player has one Envoy and one scoring meeple on the scoreboard (together: "scoring figures").</p></div>
+    <div class="rb"><div class="rl">Using Messenger Cards</div>
+      <p>After each scoring event, move one scoring figure forward. If it lands on a dark space, choose to either use the card's ability or gain 2 pts. Then place the card face-down at the bottom of the deck.</p>
+    </div>
+    <div class="rb"><div class="rl">Card Abilities</div>
+      <ul>
+        <li><strong>Card 1</strong>: Score your lowest-value city as if it were end of game. Meeples stay in place.</li>
+        <li><strong>Card 2</strong>: Score your lowest-value road. Same as Card 1 but for roads.</li>
+        <li><strong>Card 3</strong>: Score your lowest-value monastery. Same as Card 1 but for monasteries.</li>
+        <li><strong>Card 4</strong>: Take an extra turn — draw and place another tile, optionally deploy a meeple, and score.</li>
+        <li><strong>Card 5</strong>: 2 pts per shield in any city where you have a meeple.</li>
+        <li><strong>Card 6</strong>: 2 pts per knight (meeple in a city) you have on the board. Knights stay in place.</li>
+        <li><strong>Card 7</strong>: 2 pts per farmer you have on the board. Farmers stay in place.</li>
+        <li><strong>Card 8</strong>: Move one scoring figure to match the other. Choose a feature with at least one of your meeples, score it alone (end-of-game method), then return 1 meeple from that feature.</li>
+      </ul>
+      <div class="note">Only one scoring figure may be moved per scoring event. If a card's score lands the figure on another dark space, you may draw another card — chains are unlimited.</div>
+    </div>
+    <div class="rb"><div class="rl">End of Game</div>
+      <p>Before final scoring, each player adds their Envoy and meeple scores and advances their marker accordingly, then removes the Envoy. No cards are drawn during final scoring.</p>
+      <p><strong>With Inns &amp; Cathedrals:</strong> Cards 1/2 give 0 pts for incomplete Inn/Cathedral features; Cards 6–7 count the Big Meeple as only 1 knight/farmer.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Ferries -->
+<div class="section" id="ferry" data-sec="Ferries" style="--jewel:var(--c-ferry)">
+  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">⛵</span><span class="sec-title">Ferries</span><span class="sec-tag">+~15 min</span><span class="sec-chev">▾</span></div>
+  <div class="sec-body">
+    <div class="rb"><div class="rl">Contents</div><p>8 lake tiles (including 1 starting tile), 8 wooden ferries.</p></div>
+    <div class="rb"><div class="rl">Placing a Ferry</div>
+      <p>After optionally deploying a meeple to a road, you <strong>must</strong> take a ferry from the supply and place it on the lake, connecting two roads on the tile. This is mandatory regardless of whether you deployed a meeple. The two connected roads are treated as one continuous road; the lake serves as the endpoint of any unconnected road.</p>
+      <div class="note">If you deploy to a road, you must choose one of the three or four roads on that tile.</div>
+    </div>
+    <div class="rb"><div class="rl">Moving a Ferry (later turns)</div>
+      <p>If you place a tile that extends at least one road connected by a ferry, you may (but are not required to) move that ferry. After moving, the ferry must still connect two roads on its tile. If multiple ferries are on the extended road, only the one closest to the new tile may be moved.</p>
+      <div class="note">Special case: if your tile extends multiple ferried roads, you may move the closest ferry on each of those roads, in any order you choose.</div>
+    </div>
+    <div class="rb"><div class="rl">Expansion Interactions</div>
+      <p><strong>Inns &amp; Cathedrals:</strong> A road connected by ferry scores 1 pt per tile if no Inn is present.<br><strong>Traders &amp; Builders:</strong> A Builder's road extended solely by a ferry move does not trigger an extra turn.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Gold Mines -->
+<div class="section" id="gold" data-sec="Gold Mines" style="--jewel:var(--c-goldm)">
+  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🥇</span><span class="sec-title">Gold Mines</span><span class="sec-tag">+~10 min</span><span class="sec-chev">▾</span></div>
+  <div class="sec-body">
+    <div class="rb"><div class="rl">Contents</div><p>8 gold mine tiles, 1 scoring chart, 16 wooden gold nuggets.</p></div>
+    <div class="rb"><div class="rl">When Triggered</div><p>When you draw a gold mine tile, place it normally, then place 1 gold nugget on that tile and on each tile orthogonally or diagonally adjacent to it. Multiple nuggets may stack on a single tile.</p></div>
+    <div class="rb"><div class="rl">Claiming Gold</div>
+      <p>When a feature completes, the player with the most meeples on that feature claims all gold nuggets on its tiles.</p>
+      <div class="sb"><div class="sb-t">Gold Nugget Scoring (converted at game end)</div>
+        <div class="sr"><span>1–3 nuggets</span><span class="sv">1 pt each</span></div>
+        <div class="sr"><span>4–6 nuggets</span><span class="sv">2 pts each</span></div>
+        <div class="sr"><span>7–9 nuggets</span><span class="sv">3 pts each</span></div>
+        <div class="sr"><span>10+ nuggets</span><span class="sv">4 pts each</span></div>
+      </div>
+      <div class="note">Farmers cannot claim gold. Any nuggets remaining on tiles at game end are returned to the box.</div>
+    </div>
+    <div class="rb"><div class="rl">Tied Majority</div><p>In a tie, starting with the player whose turn it is and going clockwise, each tied player takes one nugget at a time until all are distributed.</p></div>
+  </div>
+</div>
+
+<!-- Mage & Witch -->
+<div class="section" id="mage" data-sec="Mage &amp; Witch" style="--jewel:var(--c-mage)">
+  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🧙</span><span class="sec-title">Mage &amp; Witch</span><span class="sec-tag">+~10 min</span><span class="sec-chev">▾</span></div>
+  <div class="sec-body">
+    <div class="rb"><div class="rl">Contents</div><p>8 magic tiles, 1 Mage (purple), 1 Witch (orange). Both are shared figures belonging to no player.</p></div>
+    <div class="rb"><div class="rl">Moving the Mage or Witch</div>
+      <p>When you draw a magic tile, place it normally. Then, <strong>before deploying a meeple</strong>, you must move either the Mage or the Witch to any incomplete road or city. The two figures cannot occupy the same road or city.</p>
+      <p>This step happens before scoring. If placing your tile completes a feature, you can move the Mage or Witch onto it before scoring — affecting the result.</p>
+      <div class="note">If no placement is possible (no incomplete roads or cities), remove one figure and return it to the supply.</div>
+    </div>
+    <div class="rb"><div class="rl">Scoring Effects</div>
+      <ul>
+        <li><strong>Mage</strong>: +1 pt per tile in the feature.</li>
+        <li><strong>Witch</strong>: The feature's total score is <strong>halved (round up)</strong>.</li>
+      </ul>
+      <p>After scoring, remove the figure from that feature and return it to the supply.</p>
+    </div>
+    <div class="rb"><div class="rl">End of Game</div>
+      <p>The Mage and Witch still apply their effects at final scoring (even to incomplete features).</p>
+      <div class="note">With Inns &amp; Cathedrals: an incomplete Inn/Cathedral feature scores 0; if the Mage is present, it still adds 1 pt per tile (but shields still score 0).</div>
+    </div>
+  </div>
+</div>
+
+<!-- Robbers -->
+<div class="section" id="robber" data-sec="Robbers" style="--jewel:var(--c-robber)">
+  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🦹</span><span class="sec-title">Robbers</span><span class="sec-tag">+~10 min</span><span class="sec-chev">▾</span></div>
+  <div class="sec-body">
+    <div class="rb"><div class="rl">Contents</div><p>8 Robber tiles, 6 Robber figures (one per player color).</p></div>
+    <div class="rb"><div class="rl">Placing a Robber</div>
+      <p>When you draw a Robber tile, place it normally. Then, before deploying a meeple, you may place your Robber on the scoreboard on the <strong>same space</strong> as another player's scoring marker. Then each other player clockwise may also place their Robber.</p>
+    </div>
+    <div class="rb"><div class="rl">Stealing</div>
+      <p>Whenever a player's scoring marker advances due to scoring, if your Robber is on the same space, you receive half their score (<strong>rounded up</strong> — e.g., opponent scores 5, you get 3). Your Robber then returns to your supply. The victim does not lose any points.</p>
+    </div>
+    <div class="rb"><div class="rl">Other Rules</div>
+      <ul>
+        <li>If a player moves their marker to record points they received from being robbed, and your Robber is on that new space, you may not steal again from that move (no Robber-on-Robber chains).</li>
+        <li>A Robber cannot pass on an opportunity to steal in hopes of a bigger score later.</li>
+        <li>You cannot rob yourself.</li>
+      </ul>
+    </div>
+    <div class="rb"><div class="rl">End of Game</div>
+      <p>Any Robber still on the scoreboard at game end scores its owner <strong>3 pts</strong>.</p>
+      <div class="note">With Messengers: if a stolen score lands your marker on a dark space, you may draw a Messenger card.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Crop Circles -->
+<div class="section" id="crop" data-sec="Crop Circles" style="--jewel:var(--c-crop)">
+  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🌾</span><span class="sec-title">Crop Circles</span><span class="sec-tag">+~10 min</span><span class="sec-chev">▾</span></div>
+  <div class="sec-body">
+    <div class="rb"><div class="rl">Contents</div><p>6 Crop Circle tiles. The crop circle itself is a road endpoint and field boundary — meeples may not be placed on the crop circle symbol.</p></div>
+    <div class="rb"><div class="rl">When Triggered</div><p>When you draw a Crop Circle tile, complete your normal turn first (① place tile → ② deploy meeple → ③ score), then execute the Crop Circle effect.</p></div>
+    <div class="rb"><div class="rl">The Effect</div>
+      <p>You choose one of the two effects below. Then starting with the player to your left, each player clockwise executes the effect in turn:</p>
+      <ul>
+        <li><strong>Effect A (may)</strong>: You <em>may</em> deploy one meeple of the matching type directly alongside an existing meeple of the same type on the board.</li>
+        <li><strong>Effect B (must)</strong>: You <em>must</em> recall one meeple of the matching type from the board.</li>
+      </ul>
+    </div>
+    <div class="rb"><div class="rl">Which Meeple Type</div>
+      <ul>
+        <li>Pitchfork crop circle → Farmers (meeples in fields).</li>
+        <li>Hammer crop circle → Thieves (meeples on roads).</li>
+        <li>Shield crop circle → Knights (meeples in cities).</li>
+      </ul>
+      <div class="note">Under Effect A, only the matching meeple type may be deployed. If a player has no matching meeple on the board, they are skipped. The active player executes the effect last.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Princess & Dragon -->
+<div class="section" id="exp3" data-sec="The Princess &amp; The Dragon" style="--jewel:var(--c-dragon)">
+  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🐉</span><span class="sec-title">The Princess &amp; The Dragon</span><span class="sec-tag">+~40 min</span><span class="sec-chev">▾</span></div>
+  <div class="sec-body">
+    <div class="rb"><div class="rl">Contents</div><p>30 new tiles (Volcano, Dragon, Princess, Magic Gate symbols), 1 Dragon figure, 1 Fairy figure.</p></div>
+    <div class="rb"><div class="rl">🌋 Volcano Tile</div>
+      <p>Place normally. You <strong>cannot</strong> deploy a meeple, but you may move the Fairy. Then move the Dragon to this volcano. If the Dragon is already on the board, it simply moves to the new volcano — no rampage is triggered. End your turn.</p>
+      <div class="note">The Dragon does not exist until the first Volcano tile appears. If a Dragon tile is drawn before a Volcano, set it aside face-up and draw again. Once the Volcano appears, shuffle all set-aside Dragon tiles back into the stack.</div>
+    </div>
+    <div class="rb"><div class="rl">🔥 Dragon Tile (Rampage)</div>
+      <p>Place normally and optionally deploy a meeple. Then the Dragon rampages.</p>
+      <h3>Rampage Sequence</h3>
+      <p>Starting with the player whose turn it is, each player clockwise moves the Dragon one step (horizontally or vertically), for 6 total steps (unless blocked).</p>
+      <ul>
+        <li>The Dragon cannot visit the same tile twice in one rampage.</li>
+        <li>The Dragon cannot enter a tile occupied by the Fairy.</li>
+        <li>Any meeple or special figure on a tile the Dragon passes through or stops on is eaten and returned to its owner.</li>
+      </ul>
+      <div class="sb"><div class="sb-t">The Dragon Eats</div>
+        <div class="sr"><span>Regular meeples</span><span class="sv">✓ Eaten</span></div>
+        <div class="sr"><span>Abbot</span><span class="sv">✓ Eaten</span></div>
+        <div class="sr"><span>Big Meeple (Exp. 1)</span><span class="sv">✓ Eaten</span></div>
+        <div class="sr"><span>Builder &amp; Pig (Exp. 2)</span><span class="sv">✓ Eaten</span></div>
+        <div class="sr"><span>Mage &amp; Witch</span><span class="sv">✓ Eaten</span></div>
+      </div>
+      <div class="sb"><div class="sb-t">The Dragon Does NOT Eat</div>
+        <div class="sr"><span>The Fairy</span><span class="sv">✗ Safe</span></div>
+        <div class="sr"><span>Meeples in Castles or Count's City</span><span class="sv">✗ Safe</span></div>
+        <div class="sr"><span>Tiles themselves</span><span class="sv">✗ Safe</span></div>
+      </div>
+      <div class="note">Dead end: if the Dragon cannot legally move before completing 6 steps, the rampage ends immediately.</div>
+    </div>
+    <div class="rb"><div class="rl">👑 Princess Tile</div>
+      <p>Place normally. If the tile connects to a city that already has a knight, you <strong>may</strong> remove one knight from that city and return it to its owner.</p>
+      <p>If you remove a knight, you <strong>may not</strong> deploy a meeple this turn. If the city has no knights (or you choose not to remove one), deploy normally.</p>
+    </div>
+    <div class="rb"><div class="rl">🚪 Magic Gate Tile</div>
+      <p>After placing a Magic Gate tile, you may deploy a meeple to this tile or any other tile on the board, following all normal deployment rules (no occupied features, no completed features). If no legal placement exists anywhere, no meeple may be deployed this turn.</p>
+    </div>
+    <div class="rb"><div class="rl">🧚 The Fairy</div>
+      <p>The Fairy is a shared figure belonging to no player.</p>
+      <h3>Moving the Fairy</h3><p>Moving the Fairy <strong>replaces</strong> deploying a meeple — choose one or the other. The Fairy may be placed next to any of your meeples, including farmers in fields.</p>
+      <h3>Fairy Effects (while next to your meeple)</h3>
+      <ul>
+        <li><strong>① 1 pt at turn start</strong>: At the start of your normal turn (not a Builder extra turn), gain 1 pt if the Fairy is next to one of your meeples.</li>
+        <li><strong>② Dragon protection</strong>: The Dragon cannot enter a tile occupied by the Fairy, protecting all meeples there.</li>
+        <li><strong>③ +3 pts on scoring</strong>: When the feature next to the Fairy scores, you gain an extra 3 pts regardless of whether your meeple won. After scoring, your meeple returns but the Fairy stays.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Bridges, Castles & Bazaars -->
+<div class="section" id="exp8" data-sec="Bridges, Castles &amp; Bazaars" style="--jewel:var(--c-bridge)">
+  <div class="sec-hdr" onclick="tog(this)"><span class="sec-icon">🌉</span><span class="sec-title">Bridges, Castles &amp; Bazaars</span><span class="sec-tag">+~40 min</span><span class="sec-chev">▾</span></div>
+  <div class="sec-body">
+    <div class="rb"><div class="rl">Contents</div><p>12 new tiles (8 with Bazaar symbol), 12 Castle tiles, 12 Bridges. 2–4 players: 3 bridges + 3 castle tiles each. 5–6 players: 2 each.</p></div>
+    <div class="rb"><div class="rl">Bridges</div>
+      <h3>Placing a Bridge</h3>
+      <p>After placing a tile, you may build one bridge. A bridge acts as a road crossing from one side of a tile to the other. It may be built on the tile you just placed or any orthogonally adjacent tile. Both bridge ends must rest on fields (not cities, roads, or rivers).</p>
+      <p>A bridge does not need to connect to existing roads. If both ends rest on fields with no connecting road, the bridge is a complete standalone road — it <strong>scores 1 pt immediately</strong> when placed.</p>
+      <ul>
+        <li>A bridge counts as one tile's worth of road but is neither a road start nor end.</li>
+        <li>Bridges may connect to other bridges; only one bridge per tile.</li>
+        <li>A bridge may be placed on a tile occupied by a monastery.</li>
+        <li>A bridge may not be placed on a tile containing another player's meeple or game piece.</li>
+      </ul>
+      <div class="note">You may use a bridge to connect a road to a field on the same turn as placement.</div>
+    </div>
+    <div class="rb"><div class="rl">Castles</div>
+      <h3>Converting a Pennant City</h3>
+      <p>When you complete a small city (exactly 2 tiles), the player occupying it may choose: score 4 pts and return meeples as normal; or place a Castle tile on it and leave the meeple there to score later.</p>
+      <p><strong>You must have a meeple in the city to build a Castle.</strong> Which tile the meeple was placed on does not affect eligibility.</p>
+      <h3>Scoring a Castle</h3>
+      <p>A Castle's "neighborhood" is the 2 castle tiles plus the 2 tiles to the left and 2 tiles to the right — 6 tiles total.</p>
+      <p>The Castle scores points equal to the first feature that completes anywhere within its neighborhood. The meeple returns, but the Castle tile remains for the rest of the game.</p>
+      <ul>
+        <li>You cannot pass — the first completion within the neighborhood triggers the Castle, no matter the score.</li>
+        <li>If multiple features complete simultaneously in the same turn, you may choose which one the Castle scores from.</li>
+        <li>If you own both the Castle and the completing feature, you score both separately.</li>
+        <li>Castles within each other's neighborhoods chain together and all score the same amount simultaneously.</li>
+        <li><strong>If the game ends before any feature in the neighborhood completes, the Castle scores 0 pts and the meeple is lost.</strong></li>
+      </ul>
+      <div class="note">At final scoring, farmers score 4 pts per Castle (vs. 3 pts per normal city).</div>
+    </div>
+    <div class="rb"><div class="rl">Bazaars</div>
+      <p>When you draw a Bazaar tile, complete your normal turn first (place tile → deploy meeple → score), then run the auction.</p>
+      <h3>Auction Procedure</h3>
+      <p>Skip the auction if fewer tiles are available than there are players. Otherwise, flip over tiles equal to the player count from the top of the stack.</p>
+      <p>Starting with the player to your left, they select a tile and open bidding at <strong>any amount ≥ 0 pts (no negative bids)</strong>. Each other player clockwise may raise the bid or pass. After all players have had one chance, the player who selected the tile must:</p>
+      <ul>
+        <li><strong>Buy</strong> the tile — pay the highest bid (deduct from their score), or</li>
+        <li><strong>Sell</strong> the tile to the highest bidder — receive the bid amount (add to their score).</li>
+      </ul>
+      <p>If no one outbid the opener (highest bid = 0), they take the tile for free. Scores can go below 0 — this is normal, especially early in the game.</p>
+      <p>The <strong>last remaining tile</strong> goes to the player who hasn't bought one yet, <strong>for free</strong>.</p>
+      <div class="note">No chain reactions: if a Bazaar tile appears during an auction, it does not trigger a new auction until the current one is fully resolved and that player completes their normal turn.</div>
+      <p><strong>Variant (no bidding):</strong> After your normal turn, reveal tiles equal to the player count. Starting left, each player clockwise selects one tile and immediately plays a full normal turn with it.</p>
+    </div>
+  </div>
+</div>
+
+<div id="noResults" style="text-align:center;color:var(--text-dim);padding:2rem;font-size:.88rem;display:none">No results found. Try different keywords.</div>
+</main>
+
+<button id="sfab" aria-label="Search">🔍</button>
+
+<div id="sov">
+  <div class="sbar"><span class="sico">🔍</span><input type="text" id="sinp" placeholder="Search rules… e.g. farmer, dragon, scoring" autocomplete="off"><button id="scls">✕</button></div>
+  <div id="scnt"></div>
+  <div id="sres"></div>
+</div>
+
+<nav id="bnav">
+  <a class="ni" href="#beginner" onclick="nv(event,'beginner')"><span class="nic">🌱</span><span class="nil">Beginner</span></a>
+  <a class="ni" href="#turnflow" onclick="nv(event,'turnflow')"><span class="nic">🔄</span><span class="nil">Turn Flow</span></a>
+  <a class="ni" href="#faq" onclick="nv(event,'faq')"><span class="nic">⚖</span><span class="nil">Referee</span></a>
+  <div class="nd"></div>
+  <a class="ni" href="#base" onclick="nv(event,'base')"><span class="nic">📜</span><span class="nil">Base</span></a>
+  <a class="ni" href="#river" onclick="nv(event,'river')"><span class="nic">🌊</span><span class="nil">River</span></a>
+  <a class="ni" href="#abbot" onclick="nv(event,'abbot')"><span class="nic">🌸</span><span class="nil">Abbot</span></a>
+  <a class="ni" href="#exp1" onclick="nv(event,'exp1')"><span class="nic">🏰</span><span class="nil">Inns</span></a>
+  <a class="ni" href="#exp2" onclick="nv(event,'exp2')"><span class="nic">🐷</span><span class="nil">Traders</span></a>
+  <a class="ni" href="#biplane" onclick="nv(event,'biplane')"><span class="nic">✈</span><span class="nil">Flier</span></a>
+  <a class="ni" href="#edict" onclick="nv(event,'edict')"><span class="nic">📨</span><span class="nil">Messenger</span></a>
+  <a class="ni" href="#ferry" onclick="nv(event,'ferry')"><span class="nic">⛵</span><span class="nil">Ferries</span></a>
+  <a class="ni" href="#gold" onclick="nv(event,'gold')"><span class="nic">🥇</span><span class="nil">Gold</span></a>
+  <a class="ni" href="#mage" onclick="nv(event,'mage')"><span class="nic">🧙</span><span class="nil">Mage</span></a>
+  <a class="ni" href="#robber" onclick="nv(event,'robber')"><span class="nic">🦹</span><span class="nil">Robbers</span></a>
+  <a class="ni" href="#crop" onclick="nv(event,'crop')"><span class="nic">🌾</span><span class="nil">Crop</span></a>
+  <a class="ni" href="#exp3" onclick="nv(event,'exp3')"><span class="nic">🐉</span><span class="nil">Dragon</span></a>
+  <a class="ni" href="#exp8" onclick="nv(event,'exp8')"><span class="nic">🌉</span><span class="nil">Bridges</span></a>
+</nav>
+
+<script>
+function tog(h){h.closest('.section').classList.toggle('closed');}
+function nv(e,id){
+  e.preventDefault();
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.classList.remove('closed','sec-hidden');
+  window.scrollTo({top:el.getBoundingClientRect().top+scrollY-8,behavior:'smooth'});
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  e.currentTarget.classList.add('active');
+}
+const sfab=document.getElementById('sfab'),sov=document.getElementById('sov'),
+      sinp=document.getElementById('sinp'),scls=document.getElementById('scls'),
+      scnt=document.getElementById('scnt'),sres=document.getElementById('sres');
+sfab.addEventListener('click',()=>{sov.classList.add('open');setTimeout(()=>sinp.focus(),150);});
+scls.addEventListener('click',closeSrch);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSrch();});
+function closeSrch(){
+  sov.classList.remove('open');sinp.value='';sres.innerHTML='';scnt.textContent='';
+  document.querySelectorAll('.section.sec-hidden').forEach(s=>s.classList.remove('sec-hidden'));
+}
+sinp.addEventListener('input',function(){
+  const q=this.value.trim().toLowerCase();
+  sres.innerHTML='';
+  if(!q){scnt.textContent='';return;}
+  const seen=new Map();
+  document.querySelectorAll('.section[data-sec]').forEach(sec=>{
+    sec.querySelectorAll('.rb,.fq,.fa,p,li').forEach(bl=>{
+      if(!seen.has(sec)&&bl.textContent.toLowerCase().includes(q))
+        seen.set(sec,{sec,name:sec.dataset.sec,snip:gsnip(bl.textContent,q)});
+    });
+  });
+  const hits=[...seen.values()];
+  if(!hits.length){scnt.textContent='No results found';return;}
+  scnt.textContent=`${hits.length} section(s) found`;
+  hits.forEach(h=>{
+    const a=document.createElement('a');
+    a.className='shit';a.href='#'+h.sec.id;
+    a.innerHTML=`<div class="hsec">${h.name}</div>${hlsnip(h.snip,q)}`;
+    a.addEventListener('click',e=>{
+      e.preventDefault();closeSrch();
+      setTimeout(()=>{h.sec.classList.remove('closed','sec-hidden');window.scrollTo({top:h.sec.getBoundingClientRect().top+scrollY-8,behavior:'smooth'});},80);
+    });
+    sres.appendChild(a);
+  });
+});
+function gsnip(t,q){const lo=t.toLowerCase(),i=lo.indexOf(q);if(i===-1)return t.slice(0,120);const s=Math.max(0,i-40),e=Math.min(t.length,i+q.length+80);return(s>0?'…':'')+t.slice(s,e)+(e<t.length?'…':'');}
+function hlsnip(t,q){return t.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'),m=>`<mark class="hl">${m}</mark>`);}
+
+const EXPS=[
+  {id:'river',name:'River',color:'#0984e3'},{id:'abbot',name:'Abbot',color:'#6c5ce7'},
+  {id:'inn',name:'Inns & Cathedrals',color:'#c0392b'},{id:'builder',name:'Traders & Builders',color:'#e67e22'},
+  {id:'flier',name:'Flying Machines',color:'#00b894'},{id:'messenger',name:'Messengers',color:'#8e44ad'},
+  {id:'ferry',name:'Ferries',color:'#2980b9'},{id:'gold',name:'Gold Mines',color:'#d4a017'},
+  {id:'mage',name:'Mage & Witch',color:'#a855f7'},{id:'robber',name:'Robbers',color:'#b03a2e'},
+  {id:'crop',name:'Crop Circles',color:'#27ae60'},{id:'dragon',name:'Princess & Dragon',color:'#e17055'},
+  {id:'bridge',name:'Bridges & Castles',color:'#636e72'},
+];
+const EM=Object.fromEntries(EXPS.map(e=>[e.id,e]));
+const act=new Set();
+const FLOW=[
+  {num:'1',title:'Place a Tile',steps:[
+    {t:'Draw 1 tile and place it adjacent to existing tiles (all touching edges must match)',r:[]},
+    {t:'Cannot place? Discard and redraw',r:[],c:'Rare situation'},
+    {t:'River tile: must extend the river — no folding back, no two same-direction curves in a row',r:['river'],c:'When river stack runs out, switch to normal tiles'},
+    {t:'Gold mine tile: place 1 nugget on this tile and each adjacent tile (including diagonals)',r:['gold']},
+    {t:'Magic tile: must move the Mage or Witch to any incomplete road or city',r:['mage'],c:'They cannot share a feature; if no placement is possible, remove one'},
+    {t:'Volcano tile: move Dragon here — no meeple deployment this turn',r:['dragon']},
+    {t:'If placing the tile forces Mage and Witch onto the same feature: immediately move one',r:['mage']},
+    {t:'Optional: place your Robber on the scoreboard on the same space as another player\'s marker',r:['robber']},
+    {t:'Optional: build a bridge on this tile or an adjacent tile (field edges only; not on opponent\'s meeple/piece)',r:['bridge']},
+  ]},
+  {num:'2',title:'Deploy a Meeple (optional)',steps:[
+    {t:'Place 1 meeple on a feature of this tile',r:[],c:'Feature must not already be occupied'},
+    {t:'Or: use Flying Machine — roll die for distance (1–3), land on incomplete road/city/monastery',r:['flier'],c:'May land on opponent-occupied incomplete features; fields forbidden; no valid spot = meeple returned'},
+    {t:'Or: deploy Builder onto a city or road where you already have a meeple',r:['builder']},
+    {t:'Or: deploy Pig onto a field where you already have a farmer (+1 pt per city at scoring)',r:['builder']},
+    {t:'Or: deploy Abbot onto a monastery or garden (regular meeples cannot go on gardens)',r:['abbot']},
+    {t:'Or: recall your Abbot and score it now (replaces deployment)',r:['abbot'],c:'Scores like a monastery; no need to wait for full surround'},
+    {t:'Or: deploy Big Meeple (counts as 2 meeples), follows normal rules',r:['inn']},
+    {t:'If Magic Gate tile: may deploy to any tile on the board (not occupied or completed)',r:['dragon']},
+    {t:'Instead of deploying: move the Fairy next to any of your meeples (including farmers)',r:['dragon']},
+    {t:'If Princess tile connects a city with knights: may remove one knight (then no meeple deployment)',r:['dragon']},
+    {t:'If small city (2 tiles) just completed and you have a meeple there: may build a Castle instead of scoring 4 pts',r:['bridge']},
+    {t:'If lake tile: must place a ferry connecting 2 roads on the tile (mandatory, even without a meeple)',r:['ferry'],c:'Connected roads treated as one; lake is the endpoint of unconnected roads'},
+    {t:'If placement extended a ferried road: may (optionally) move the closest ferry on that road',r:['ferry']},
+  ]},
+  {num:'3',title:'Score',steps:[
+    {t:'If any feature was completed: score and return meeples',r:[]},
+    {t:'Road: 1 pt per tile',r:[]},{t:'City: 2 pts per tile + 2 pts per shield',r:[]},{t:'Monastery: 9 pts when all 8 surrounding tiles filled',r:[]},
+    {t:'Road with Inn (complete): 2 pts per tile — incomplete road with Inn: 0 pts',r:['inn']},
+    {t:'City with Cathedral (complete): 3 pts per tile and shield — incomplete: 0 pts',r:['inn']},
+    {t:'Feature with Mage: +1 pt per tile',r:['mage']},
+    {t:'Feature with Witch: total score halved (round up)',r:['mage']},
+    {t:'On feature completion: distribute gold nuggets to majority holder (ties: clockwise one-at-a-time)',r:['gold']},
+    {t:'Move one scoring figure; if it lands on a dark space: draw a Messenger card (use effect or take 2 pts)',r:['messenger']},
+  ]},
+  {num:'4',title:'Post-Scoring (certain expansions)',req:['builder','dragon','crop','bridge'],steps:[
+    {t:'[Builder] If city expanded or road extended with Builder on it: take one extra turn (place → deploy → score), once only',r:['builder']},
+    {t:'[Dragon] If Dragon tile: Dragon rampages — each player clockwise moves Dragon 1 step, 6 total; eats all meeples on visited tiles',r:['dragon'],c:'Cannot revisit tiles; cannot enter Fairy\'s tile; eating Mage/Witch removes them'},
+    {t:'[Crop Circles] If Crop Circle tile: choose Effect A (each player may deploy same-type meeple) or B (each player must recall same-type meeple)',r:['crop'],c:'Players with no matching meeple are skipped; active player executes last'},
+    {t:'[Bridges & Castles] If Bazaar tile: run auction for tiles equal to player count; winner plays a full normal turn immediately',r:['bridge']},
+  ]},
+];
+function rToggles(){
+  const w=document.getElementById('expToggles');w.innerHTML='';
+  EXPS.forEach(e=>{
+    const b=document.createElement('button');
+    b.className='etog'+(act.has(e.id)?' on':'');b.textContent=e.name;
+    const on=act.has(e.id);
+    b.style.cssText=`border-color:${e.color};color:${on?'#fff':'rgba(255,255,255,.4)'};background:${on?e.color:'transparent'}`;
+    b.onclick=()=>{act.has(e.id)?act.delete(e.id):act.add(e.id);rToggles();rFlow();};
+    w.appendChild(b);
+  });
+}
+function rFlow(){
+  const d=document.getElementById('flowDisplay');d.innerHTML='';
+  FLOW.forEach(ph=>{
+    if(ph.req&&ph.req.length&&!ph.req.some(r=>act.has(r)))return;
+    const vs=ph.steps.filter(s=>!s.r.length||s.r.some(r=>act.has(r)));
+    if(!vs.length)return;
+    const pe=document.createElement('div');pe.className='fp';
+    const hd=document.createElement('div');hd.className='fph';
+    hd.innerHTML=`<span class="pnum">${ph.num}</span><span class="ptitle">${ph.title}</span>`;
+    pe.appendChild(hd);
+    const se=document.createElement('div');se.className='fsteps';
+    vs.forEach(step=>{
+      const base=!step.r.length;
+      const el=document.createElement('div');el.className='fstep';
+      const dot=document.createElement('span');dot.className='fdot';
+      dot.style.background=base?'var(--gold)':(EM[step.r.find(r=>act.has(r))??step.r[0]]?.color??'#888');
+      el.appendChild(dot);
+      const tw=document.createElement('div');tw.className='ftxt';
+      let html='';
+      if(!base)step.r.filter(r=>act.has(r)).forEach(r=>{const ex=EM[r];if(ex)html+=`<span class="fbadge" style="background:${ex.color}">${ex.name}</span>`;});
+      html+=step.t;
+      if(step.c)html+=`<span class="fcond">⚠ ${step.c}</span>`;
+      tw.innerHTML=html;el.appendChild(tw);se.appendChild(el);
+    });
+    pe.appendChild(se);d.appendChild(pe);
+  });
+}
+document.addEventListener('DOMContentLoaded',()=>{rToggles();rFlow();});
+if(document.readyState!=='loading'){rToggles();rFlow();}
+</script>
+</body>
+</html>
