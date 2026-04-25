@@ -617,6 +617,11 @@ mark.hl {
   </div>
   <div class="sec-body">
     <div class="rb">
+      <div class="rl">Base Game</div>
+      <div class="fq">Q: Can I deploy a meeple on a tile that connects to an already-occupied city or road on another tile?</div>
+      <div class="fa"><strong>No.</strong> Occupation applies to the entire connected feature across all tiles, not just the tile you placed. If any part of the connected feature already has a meeple, you cannot deploy to that feature.</div>
+    </div>
+    <div class="rb">
       <div class="rl">Gold Mines</div>
       <div class="fq">Q: If a gold mine tile completes a feature on the same turn, can gold be claimed immediately?</div>
       <div class="fa"><strong>Yes.</strong> Order: ① Place tile → ② Place gold → ③ Score and distribute gold. Gold is placed before scoring.</div>
@@ -631,6 +636,8 @@ mark.hl {
       <div class="fa"><strong>No — 0 pts.</strong> Worse than a normal incomplete feature, which at least scores 1 pt per tile.</div>
       <div class="fq">Q: Does the Big Meeple count as two meeples for majority?</div>
       <div class="fa"><strong>Yes — counts as 2 meeples</strong> when determining majority.</div>
+      <div class="fq">Q: If two cathedrals end up in the same city, do they stack to 4 pts/tile?</div>
+      <div class="fa"><strong>No — cathedrals don't stack.</strong> Regardless of how many cathedrals are in a city, it still scores 3 pts/tile and 3 pts/shield when completed.</div>
     </div>
     <div class="rb">
       <div class="rl">Traders &amp; Builders</div>
@@ -642,6 +649,8 @@ mark.hl {
       <div class="fa"><strong>Back to 3 pts per city.</strong> The Pig's bonus is lost.</div>
       <div class="fq">Q: If a Crop Circle tile is drawn during an extra turn, when does the effect trigger?</div>
       <div class="fa">Complete the entire extra turn first (place tile, deploy meeple, score), then execute the Crop Circle effect.</div>
+      <div class="fq">Q: If a completed city has both wine and grain symbols, does the placer claim both?</div>
+      <div class="fa"><strong>Yes — each trade good type is claimed separately.</strong> The player who placed the completing tile takes one token of each type present in the city.</div>
     </div>
     <div class="rb">
       <div class="rl">The Princess &amp; The Dragon</div>
@@ -663,7 +672,9 @@ mark.hl {
       <div class="fq">Q: After placing a magic tile, the Mage and Witch end up on the same feature — what happens?</div>
       <div class="fa">The player who placed the tile must immediately move one of them, before scoring.</div>
       <div class="fq">Q: If there are no meeples on the feature when it scores, do the Mage/Witch effects still apply?</div>
-      <div class="fa"><strong>Yes.</strong> Mage still adds 1 pt per tile; Witch still halves the total (round up). They cannot be on the same feature simultaneously.</div>
+      <div class="fa"><strong>No recipient — no effect.</strong> The Mage/Witch modifiers only apply to points a scoring player actually receives. If no player has a meeple on the feature, no one scores, so neither modifier has any effect. The figures are still removed and returned to the supply after the feature resolves.</div>
+      <div class="fq">Q: Can the Mage or Witch be placed on a field (farmer area)?</div>
+      <div class="fa"><strong>No.</strong> Both figures may only be placed on incomplete roads or cities — never on fields, completed features, or empty spaces.</div>
     </div>
     <div class="rb">
       <div class="rl">Crop Circles</div>
@@ -673,6 +684,10 @@ mark.hl {
       <div class="fa"><strong>Yes.</strong> Effect A says "may" — it is optional.</div>
       <div class="fq">Q: Under Effect A, can a meeple be placed on a feature occupied by an opponent?</div>
       <div class="fa"><strong>Yes, but only next to your own meeple already there.</strong> Follows normal shared-ownership rules.</div>
+      <div class="fq">Q: Is the active player exempt from the Crop Circle effect?</div>
+      <div class="fa"><strong>No.</strong> The active player executes the effect last, but is never exempt. Under Effect B, they must also recall a meeple of the matching type if they have one on the board.</div>
+      <div class="fq">Q: Under Effect A, can you place a second farmer in a field where you already have one?</div>
+      <div class="fa"><strong>Yes.</strong> Effect A allows you to reinforce an already-farmed field — you may add another farmer next to your existing one.</div>
     </div>
     <div class="rb">
       <div class="rl">Ferries</div>
@@ -698,6 +713,8 @@ mark.hl {
       <div class="fa"><strong>No.</strong> Meeples in Castles are protected, equivalent to the Count's city.</div>
       <div class="fq">Q: Can bazaar bidding push a score below 0?</div>
       <div class="fa"><strong>Yes.</strong> Negative scores are possible and valid.</div>
+      <div class="fq">Q: Can a 2-tile city that has shields be converted into a Castle?</div>
+      <div class="fa"><strong>Yes.</strong> Any completed 2-tile city where you have a meeple may become a Castle, regardless of shields. Once converted, the Castle scores from the next feature that completes in its neighborhood — the shields on its own tiles do not contribute.</div>
     </div>
     <div class="rb">
       <div class="rl">Flying Machines</div>
@@ -712,6 +729,13 @@ mark.hl {
       <div class="fa"><strong>Yes.</strong> Each separate scoring event can use a different figure; each individual event must use a single figure.</div>
       <div class="fq">Q: Can Messenger cards chain indefinitely?</div>
       <div class="fa"><strong>Yes — unlimited chains.</strong> Each time a scoring figure lands on a dark space, another card may be drawn.</div>
+    </div>
+    <div class="rb">
+      <div class="rl">Cross-Expansion</div>
+      <div class="fq">Q: Can the Dragon eat the Envoy figure (from Messengers)?</div>
+      <div class="fa"><strong>No.</strong> The Envoy lives on the scoreboard, not on the map tiles. The Dragon only eats figures physically placed on land tiles.</div>
+      <div class="fq">Q: If a Messenger card grants an extra turn and a Builder's feature is extended during that extra turn, does the Builder trigger yet another extra turn?</div>
+      <div class="fa"><strong>No.</strong> Builder extra turns only chain off regular turns, not off Messenger extra turns. You get at most one Builder extra turn per regular turn.</div>
     </div>
   </div>
 </div>
@@ -788,7 +812,7 @@ mark.hl {
     <span class="sec-chev">▾</span>
   </div>
   <div class="sec-body">
-    <div class="rb"><div class="rl">Contents</div><p>1 Abbot figure per player (larger than a meeple).</p></div>
+    <div class="rb"><div class="rl">Contents</div><p>1 Abbot figure per player (same size as a meeple, with a rounded dome top).</p></div>
     <div class="rb"><div class="rl">Deploying the Abbot</div><p>When placing a monastery or garden tile, you may deploy your Abbot there. Regular meeples cannot be placed on gardens.</p></div>
     <div class="rb"><div class="rl">Recalling the Abbot</div><p>On your turn, instead of deploying a new meeple, you may recall your Abbot and score it immediately — no need to wait for the feature to complete.</p></div>
     <div class="rb">
