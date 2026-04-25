@@ -1,0 +1,17 @@
+{
+  "name": "Carcassonne Rules Reference",
+  "short_name": "Carcassonne",
+  "description": "Carcassonne Big Box rules quick reference with expansion support",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f2ebe0",
+  "theme_color": "#3a2c1a",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

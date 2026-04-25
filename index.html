@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>卡卡頌規則速查</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#f2ebe0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="卡卡頌">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -1210,6 +1214,7 @@ function nv(e,id){
   window.scrollTo({top:el.getBoundingClientRect().top+scrollY-8,behavior:'smooth'});
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
   e.currentTarget.classList.add('active');
+  spyPause=true;setTimeout(()=>{spyPause=false;},800);
 }
 const sfab=document.getElementById('sfab'),sov=document.getElementById('sov'),
       sinp=document.getElementById('sinp'),scls=document.getElementById('scls'),
@@ -1220,6 +1225,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSrch();});
 function closeSrch(){
   sov.classList.remove('open');sinp.value='';sres.innerHTML='';scnt.textContent='';
   document.querySelectorAll('.section.sec-hidden').forEach(s=>s.classList.remove('sec-hidden'));
+  if(typeof updateSectionFilter!=='undefined')updateSectionFilter();
 }
 sinp.addEventListener('input',function(){
   const q=this.value.trim().toLowerCase();
@@ -1311,7 +1317,7 @@ function rToggles(){
     const on=act.has(e.id);
     b.className='etog'+(on?' on':'');b.textContent=e.name;
     b.style.cssText=`border-color:${e.color};color:${on?'#fff':e.color};background:${on?e.color:'transparent'}`;
-    b.onclick=()=>{act.has(e.id)?act.delete(e.id):act.add(e.id);rToggles();rFlow();};
+    b.onclick=()=>{act.has(e.id)?act.delete(e.id):act.add(e.id);rToggles();rFlow();updateSectionFilter();};
     w.appendChild(b);
   });
 }
@@ -1344,6 +1350,44 @@ function rFlow(){
 }
 document.addEventListener('DOMContentLoaded',()=>{rToggles();rFlow();});
 if(document.readyState!=='loading'){rToggles();rFlow();}
+
+// ── Expansion → Section filter ──
+const EXP_SEC={river:'river',abbot:'abbot',inn:'exp1',builder:'exp2',flier:'biplane',messenger:'edict',ferry:'ferry',gold:'gold',mage:'mage',robber:'robber',crop:'crop',dragon:'exp3',bridge:'exp8'};
+function updateSectionFilter(){
+  const anyOn=act.size>0;
+  EXPS.forEach(e=>{
+    const sid=EXP_SEC[e.id];if(!sid)return;
+    const sec=document.getElementById(sid);
+    const ni=document.querySelector('.ni[href="#'+sid+'"]');
+    const show=!anyOn||act.has(e.id);
+    if(sec)sec.classList.toggle('sec-hidden',!show);
+    if(ni)ni.style.opacity=show?'':'0.35';
+  });
+}
+
+// ── Scroll-spy ──
+let spyPause=false;
+const spyVisible=new Map();
+const spyObs=new IntersectionObserver(entries=>{
+  if(spyPause)return;
+  entries.forEach(e=>{e.isIntersecting?spyVisible.set(e.target.id,e.target):spyVisible.delete(e.target.id);});
+  let topEl=null,topY=Infinity;
+  spyVisible.forEach(el=>{const r=el.getBoundingClientRect();if(r.top<topY){topY=r.top;topEl=el;}});
+  if(!topEl)return;
+  const ni=document.querySelector('.ni[href="#'+topEl.id+'"]');
+  if(!ni||ni.classList.contains('active'))return;
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  ni.classList.add('active');
+  const bnav=document.getElementById('bnav');
+  const nr=ni.getBoundingClientRect(),br=bnav.getBoundingClientRect();
+  if(nr.left<br.left||nr.right>br.right)ni.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
+},{rootMargin:'0px 0px -60% 0px',threshold:0});
+document.querySelectorAll('.section[id]').forEach(s=>spyObs.observe(s));
+
+// ── Service Worker ──
+if('serviceWorker'in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
 </script>
 </body>
 </html>
